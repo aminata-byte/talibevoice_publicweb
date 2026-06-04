@@ -1,9 +1,10 @@
 .navbar {
-  background-color: var(--primary-dark);
+  background-color: var(--white);
   padding: 0 2rem;
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid var(--border);
 }
 
 .navbar__container {
@@ -29,7 +30,7 @@
 .navbar__logo-text {
   font-size: 18px;
   font-weight: 700;
-  color: var(--white);
+  color: var(--primary-dark);
 }
 
 /* Liens */
@@ -40,17 +41,23 @@
 }
 
 .navbar__links a {
-  color: var(--white);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 400;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
 }
 
 .navbar__links a:hover {
-  opacity: 0.8;
+  color: var(--primary);
 }
 
 .navbar__links a.active {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.navbar__links li a.navbar__link--green {
+  color: var(--primary) !important;
   font-weight: 600;
 }
 

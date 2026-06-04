@@ -20,13 +20,14 @@ function Navbar() {
             <NavLink to="/daaras">Daaras</NavLink>
           </li>
           <li>
-            <NavLink to="/faire-un-don">Faire un don</NavLink>
+            <NavLink to="/devenir-partenaire" className="navbar__link--green">
+              Devenir partenaire
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/devenir-partenaire">Devenir partenaire</NavLink>
-          </li>
-          <li>
-            <NavLink to="/partenaire/login">Espace partenaire</NavLink>
+            <NavLink to="/partenaire/login" className="navbar__link--green">
+              Espace partenaire
+            </NavLink>
           </li>
         </ul>
 
