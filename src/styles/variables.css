@@ -33,4 +33,8 @@
 
   /* Font */
   --font-sans: 'Inter', sans-serif;
+
+  /* Accent */
+    --accent: #FFD54F;
+    --accent-dark: #FFC107;
 }
