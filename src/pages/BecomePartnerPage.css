@@ -1,0 +1,157 @@
+/* Hero */
+.partner__hero {
+  background-color: var(--primary-dark);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.partner__hero-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.partner__hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.partner__hero-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+}
+
+/* Section principale */
+.partner {
+  background-color: var(--background);
+  padding: 4rem 2rem;
+}
+
+.partner__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Avantages */
+.partner__avantages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.partner__avantage-card {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.partner__avantage-icon {
+  font-size: 2.5rem;
+}
+
+.partner__avantage-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.partner__avantage-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Formulaire */
+.partner__form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.partner__form {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.partner__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.partner__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.partner__input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--white);
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.partner__input:focus {
+  border-color: var(--primary);
+}
+
+.partner__textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Bouton */
+.partner__submit {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.partner__submit:hover {
+  background-color: var(--primary);
+}
+
+/* Note */
+.partner__note {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .partner__hero-title {
+    font-size: 1.8rem;
+  }
+
+  .partner__avantages {
+    grid-template-columns: 1fr;
+  }
+}
