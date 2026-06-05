@@ -1,0 +1,197 @@
+.daaras {
+  background-color: var(--background);
+  padding: 3rem 2rem;
+  min-height: 80vh;
+}
+
+.daaras__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.daaras__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.daaras__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.daaras__count {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Filtres */
+.daaras__filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.daaras__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  background-color: var(--white);
+  flex: 1;
+  min-width: 200px;
+}
+
+.daaras__search-icon {
+  font-size: 16px;
+}
+
+.daaras__search-input {
+  border: none;
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: transparent;
+  width: 100%;
+}
+
+.daaras__search-input::placeholder {
+  color: var(--text-light);
+}
+
+.daaras__select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+/* Toggle Carte/Liste */
+.daaras__toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.daaras__toggle-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--white);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.daaras__toggle-btn.active {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+/* Liste des daaras */
+.daaras__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+}
+
+/* Card daara */
+.daara__card {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.daara__card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.daara__card-image {
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.daara__card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.daara__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.daara__card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.daara__card-badge {
+  background-color: var(--accent);
+  color: var(--secondary-dark);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.daara__card-location {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.daara__card-talibés {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .daaras__filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .daaras__list {
+    grid-template-columns: 1fr;
+  }
+
+  .daaras__toggle {
+    width: 100%;
+  }
+
+  .daaras__toggle-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
