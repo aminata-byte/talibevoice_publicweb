@@ -1,0 +1,150 @@
+.soffer {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/* Header */
+.soffer__header {
+  background-color: var(--primary-dark);
+  padding: 1rem 2rem;
+}
+
+.soffer__back {
+  background: transparent;
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Container */
+.soffer__container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Tabs */
+.soffer__tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  gap: 0;
+}
+
+.soffer__tab {
+  padding: 12px 2rem;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.soffer__tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+.soffer__tab:hover {
+  color: var(--primary);
+}
+
+/* Form */
+.soffer__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.soffer__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.soffer__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.soffer__input {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--white);
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.soffer__input:focus {
+  border-color: var(--primary);
+}
+
+.soffer__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.soffer__row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* Bouton */
+.soffer__submit {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.soffer__submit:hover {
+  background-color: var(--primary);
+}
+
+/* Note */
+.soffer__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.soffer__note p {
+  font-size: 13px;
+  color: var(--primary-dark);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .soffer__container {
+    padding: 1rem;
+  }
+
+  .soffer__row {
+    grid-template-columns: 1fr;
+  }
+
+  .soffer__tab {
+    padding: 10px 1rem;
+    font-size: 14px;
+  }
+}
