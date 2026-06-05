@@ -1,0 +1,255 @@
+.etalibes {
+  min-height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.etalibes__header {
+  background-color: var(--primary-dark);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.etalibes__header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.etalibes__logo-icon {
+  font-size: 20px;
+}
+
+.etalibes__logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.etalibes__logout {
+  background: transparent;
+  font-size: 20px;
+  color: var(--white);
+  cursor: pointer;
+}
+
+/* Container */
+.etalibes__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 5rem;
+}
+
+/* Top */
+.etalibes__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.etalibes__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.etalibes__subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.etalibes__export {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.etalibes__export:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Filtres */
+.etalibes__filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.etalibes__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  background-color: var(--white);
+  flex: 1;
+  min-width: 200px;
+}
+
+.etalibes__search-input {
+  border: none;
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: transparent;
+  width: 100%;
+}
+
+.etalibes__search-input::placeholder {
+  color: var(--text-light);
+}
+
+.etalibes__select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--white);
+  cursor: pointer;
+  min-width: 200px;
+}
+
+/* Liste */
+.etalibes__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+}
+
+/* Card */
+.etalib__card {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.2s;
+}
+
+.etalib__card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.etalib__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.etalib__card-nom {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.etalib__card-info {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.etalib__card-offre {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Badges */
+.etbadge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.etbadge--green {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.etbadge--yellow {
+  background-color: #FFF8E1;
+  color: #F57F17;
+}
+
+.etbadge--gray {
+  background-color: var(--secondary-light);
+  color: var(--secondary-medium);
+}
+
+/* Bottom nav */
+.etalibes__bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--white);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0.5rem 0;
+}
+
+.etalibes__nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: transparent;
+  padding: 6px 0;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.etalibes__nav-btn span:first-child {
+  font-size: 20px;
+}
+
+.etalibes__nav-btn.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .etalibes__container {
+    padding: 1rem;
+  }
+
+  .etalibes__list {
+    grid-template-columns: 1fr;
+  }
+
+  .etalibes__filters {
+    flex-direction: column;
+  }
+
+  .etalibes__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
