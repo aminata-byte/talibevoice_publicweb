@@ -11,6 +11,23 @@ const daarasData = [
     talibés: 74,
     besoins: 3,
     region: "Dakar",
+    listeBesoins: [
+      {
+        type: "Alimentaire",
+        description: "50 sacs de riz",
+        priorite: "urgent",
+      },
+      {
+        type: "Médical",
+        description: "Médicaments contre le paludisme",
+        priorite: "urgent",
+      },
+      {
+        type: "Éducatif",
+        description: "30 kits scolaires",
+        priorite: "normal",
+      },
+    ],
   },
   {
     id: 2,
@@ -19,6 +36,13 @@ const daarasData = [
     talibés: 112,
     besoins: 1,
     region: "Thiès",
+    listeBesoins: [
+      {
+        type: "Alimentaire",
+        description: "Huile et sucre pour 1 mois",
+        priorite: "normal",
+      },
+    ],
   },
   {
     id: 3,
@@ -27,6 +51,33 @@ const daarasData = [
     talibés: 245,
     besoins: 5,
     region: "Louga",
+    listeBesoins: [
+      {
+        type: "Alimentaire",
+        description: "100 sacs de riz",
+        priorite: "urgent",
+      },
+      {
+        type: "Médical",
+        description: "Vaccins et soins de base",
+        priorite: "urgent",
+      },
+      {
+        type: "Éducatif",
+        description: "Tableaux et craies",
+        priorite: "normal",
+      },
+      {
+        type: "Infrastructure",
+        description: "Réparation du toit",
+        priorite: "urgent",
+      },
+      {
+        type: "Vêtements",
+        description: "Tenues pour 80 talibés",
+        priorite: "faible",
+      },
+    ],
   },
   {
     id: 4,
@@ -35,6 +86,18 @@ const daarasData = [
     talibés: 89,
     besoins: 2,
     region: "Dakar",
+    listeBesoins: [
+      {
+        type: "Éducatif",
+        description: "50 livres de coran",
+        priorite: "normal",
+      },
+      {
+        type: "Alimentaire",
+        description: "Farine et lait",
+        priorite: "faible",
+      },
+    ],
   },
   {
     id: 5,
@@ -43,6 +106,7 @@ const daarasData = [
     talibés: 134,
     besoins: 0,
     region: "Thiès",
+    listeBesoins: [],
   },
   {
     id: 6,
@@ -51,6 +115,28 @@ const daarasData = [
     talibés: 67,
     besoins: 4,
     region: "Saint-Louis",
+    listeBesoins: [
+      {
+        type: "Alimentaire",
+        description: "Riz et huile pour 2 mois",
+        priorite: "urgent",
+      },
+      {
+        type: "Médical",
+        description: "Trousse de premiers secours",
+        priorite: "normal",
+      },
+      {
+        type: "Infrastructure",
+        description: "Rénovation des dortoirs",
+        priorite: "normal",
+      },
+      {
+        type: "Éducatif",
+        description: "Matériel pédagogique",
+        priorite: "faible",
+      },
+    ],
   },
 ];
 
@@ -66,6 +152,7 @@ function DaarasPage() {
   const [recherche, setRecherche] = useState("");
   const [region, setRegion] = useState("Toutes les régions");
   const [vue, setVue] = useState("liste");
+  const [selectedDaara, setSelectedDaara] = useState(null);
 
   const daarasFiltres = daarasData.filter((d) => {
     const matchRecherche = d.nom
@@ -74,6 +161,12 @@ function DaarasPage() {
     const matchRegion = region === "Toutes les régions" || d.region === region;
     return matchRecherche && matchRegion;
   });
+
+  const getPrioriteClass = (priorite) => {
+    if (priorite === "urgent") return "besoin__badge besoin__badge--urgent";
+    if (priorite === "normal") return "besoin__badge besoin__badge--normal";
+    return "besoin__badge besoin__badge--faible";
+  };
 
   return (
     <div>
@@ -130,7 +223,11 @@ function DaarasPage() {
           {/* Liste */}
           <div className="daaras__list">
             {daarasFiltres.map((daara) => (
-              <div key={daara.id} className="daara__card">
+              <div
+                key={daara.id}
+                className="daara__card"
+                onClick={() => setSelectedDaara(daara)}
+              >
                 <div className="daara__card-image">
                   <span>🕌</span>
                 </div>
@@ -155,6 +252,69 @@ function DaarasPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal détail daara */}
+      {selectedDaara && (
+        <div
+          className="daara__modal-overlay"
+          onClick={() => setSelectedDaara(null)}
+        >
+          <div className="daara__modal" onClick={(e) => e.stopPropagation()}>
+            <div className="daara__modal-header">
+              <div>
+                <h2 className="daara__modal-title">{selectedDaara.nom}</h2>
+                <p className="daara__modal-location">
+                  📍 {selectedDaara.localisation}
+                </p>
+                <p className="daara__modal-talibés">
+                  👥 {selectedDaara.talibés} Talibés
+                </p>
+              </div>
+              <button
+                className="daara__modal-close"
+                onClick={() => setSelectedDaara(null)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="daara__modal-body">
+              <h3 className="daara__modal-subtitle">
+                Besoins actuels ({selectedDaara.listeBesoins.length})
+              </h3>
+
+              {selectedDaara.listeBesoins.length === 0 ? (
+                <p className="daara__modal-empty">
+                  Aucun besoin signalé pour ce daara.
+                </p>
+              ) : (
+                <div className="daara__modal-besoins">
+                  {selectedDaara.listeBesoins.map((besoin, index) => (
+                    <div key={index} className="besoin__item">
+                      <div className="besoin__item-header">
+                        <span className="besoin__type">{besoin.type}</span>
+                        <span className={getPrioriteClass(besoin.priorite)}>
+                          {besoin.priorite}
+                        </span>
+                      </div>
+                      <p className="besoin__description">
+                        {besoin.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="daara__modal-footer">
+              <a href="/faire-un-don" className="daara__modal-btn">
+                🤝 Faire un don pour ce daara
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );

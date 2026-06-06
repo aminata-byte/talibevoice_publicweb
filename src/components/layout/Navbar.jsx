@@ -7,34 +7,38 @@ function Navbar() {
       <div className="navbar__container">
         {/* Logo */}
         <Link to="/" className="navbar__logo">
-          <span className="navbar__logo-icon">🏠</span>
-          <span className="navbar__logo-text">TalibeVoice</span>
+          <img
+            src="/src/assets/logo.jpg"
+            alt="TalibeVoice"
+            className="navbar__logo-img"
+          />
         </Link>
 
         {/* Liens de navigation */}
         <ul className="navbar__links">
           <li>
-            <NavLink to="/a-propos">À propos</NavLink>
+            <a href="#impact">Impact</a>
           </li>
           <li>
-            <NavLink to="/daaras">Daaras</NavLink>
+            <a href="#processus">Processus</a>
           </li>
           <li>
-            <NavLink to="/devenir-partenaire" className="navbar__link--green">
-              Devenir partenaire
-            </NavLink>
+            <a href="#partenaires">Partenaires</a>
           </li>
           <li>
-            <NavLink to="/partenaire/login" className="navbar__link--green">
-              Espace partenaire
-            </NavLink>
+            <a href="#temoignages">Témoignages</a>
           </li>
         </ul>
 
-        {/* Bouton CTA */}
-        <Link to="/faire-un-don" className="navbar__cta">
-          Faire un don
-        </Link>
+        {/* Boutons droite */}
+        <div className="navbar__actions">
+          <Link to="/devenir-partenaire" className="navbar__btn-partner">
+            Devenir partenaire
+          </Link>
+          <Link to="/faire-un-don" className="navbar__cta">
+            Faire un don
+          </Link>
+        </div>
       </div>
     </nav>
   );

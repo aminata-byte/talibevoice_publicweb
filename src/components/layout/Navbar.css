@@ -20,17 +20,12 @@
 .navbar__logo {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
-.navbar__logo-icon {
-  font-size: 20px;
-}
-
-.navbar__logo-text {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--primary-dark);
+.navbar__logo-img {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* Liens */
@@ -56,12 +51,29 @@
   color: var(--primary);
 }
 
-.navbar__links li a.navbar__link--green {
-  color: var(--primary) !important;
-  font-weight: 600;
+/* Actions droite */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Bouton CTA */
+/* Bouton Devenir partenaire */
+.navbar__btn-partner {
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+}
+
+.navbar__btn-partner:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Bouton Faire un don */
 .navbar__cta {
   background-color: var(--accent);
   color: var(--secondary-dark);
@@ -79,6 +91,10 @@
 /* Responsive */
 @media (max-width: 768px) {
   .navbar__links {
+    display: none;
+  }
+
+  .navbar__btn-partner {
     display: none;
   }
 

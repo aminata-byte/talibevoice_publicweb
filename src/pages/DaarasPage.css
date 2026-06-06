@@ -195,3 +195,179 @@
     text-align: center;
   }
 }
+
+/* Modal overlay */
+.daara__modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Modal */
+.daara__modal {
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal header */
+.daara__modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--primary-dark);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.daara__modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.daara__modal-location {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.daara__modal-talibés {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4px;
+}
+
+.daara__modal-close {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+
+.daara__modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Modal body */
+.daara__modal-body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.daara__modal-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.daara__modal-empty {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Besoins */
+.daara__modal-besoins {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.besoin__item {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.besoin__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.besoin__type {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.besoin__description {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Badges priorité */
+.besoin__badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.besoin__badge--urgent {
+  background-color: var(--tertiary-light);
+  color: var(--tertiary);
+}
+
+.besoin__badge--normal {
+  background-color: #FFF8E1;
+  color: #F57F17;
+}
+
+.besoin__badge--faible {
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+/* Modal footer */
+.daara__modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.daara__modal-btn {
+  display: block;
+  background-color: var(--accent);
+  color: var(--secondary-dark);
+  text-align: center;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.daara__modal-btn:hover {
+  background-color: var(--accent-dark);
+}
