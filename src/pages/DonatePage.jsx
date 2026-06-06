@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Lock, Plus, X } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import "./DonatePage.css";
@@ -137,14 +138,22 @@ function DonatePage() {
                     className={`donate__payment-btn ${paiement === "wave" ? "active" : ""}`}
                     onClick={() => setPaiement("wave")}
                   >
-                    <span className="donate__payment-icon">🌊</span>
+                    <img
+                      src="/src/assets/wave-logo.png"
+                      alt="Wave"
+                      className="donate__payment-logo"
+                    />
                     <span>Wave</span>
                   </button>
                   <button
                     className={`donate__payment-btn ${paiement === "orange" ? "active" : ""}`}
                     onClick={() => setPaiement("orange")}
                   >
-                    <span className="donate__payment-icon">🟠</span>
+                    <img
+                      src="/src/assets/orange-money-logo.png"
+                      alt="Orange Money"
+                      className="donate__payment-logo"
+                    />
                     <span>Orange Money</span>
                   </button>
                 </div>
@@ -229,7 +238,6 @@ function DonatePage() {
                       ))}
                     </select>
 
-                    {/* Champ libre si "Autre" ou matériel inconnu */}
                     {(!materiels.includes(item.materiel) ||
                       item.materiel === "") && (
                       <input
@@ -258,14 +266,15 @@ function DonatePage() {
                         className="donate__remove-btn"
                         onClick={() => removeItem(index)}
                       >
-                        ✕
+                        <X size={16} />
                       </button>
                     )}
                   </div>
                 ))}
               </div>
               <button className="donate__add-btn" onClick={addItem}>
-                + Ajouter un autre matériel
+                <Plus size={16} />
+                Ajouter un autre matériel
               </button>
 
               {/* Infos donateur */}
@@ -328,7 +337,8 @@ function DonatePage() {
 
           {/* Bouton confirmer */}
           <button className="donate__submit" onClick={handleSubmit}>
-            🔒 Confirmer le don
+            <Lock size={18} />
+            Confirmer le don
           </button>
         </div>
       </div>
