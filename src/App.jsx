@@ -7,6 +7,7 @@ import PartnerLoginPage from "./pages/partner/PartnerLoginPage";
 import PartnerDashboardPage from "./pages/partner/PartnerDashboardPage";
 import SubmitOfferPage from "./pages/partner/SubmitOfferPage";
 import EnrolledTalibesPage from "./pages/partner/EnrolledTalibesPage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         {/* Pages publiques */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/a-propos" element={<AboutPage />} />
         <Route path="/faire-un-don" element={<DonatePage />} />
         <Route path="/daaras" element={<DaarasPage />} />
         <Route path="/devenir-partenaire" element={<BecomePartnerPage />} />

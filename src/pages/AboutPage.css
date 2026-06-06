@@ -1,0 +1,238 @@
+/* Hero */
+.about__hero {
+  background-color: var(--background);
+  padding: 4rem 2rem 2rem;
+  text-align: center;
+}
+
+.about__hero-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about__hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.about__hero-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/* Image */
+.about__image-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.about__image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+}
+
+/* Content */
+.about__content {
+  padding: 4rem 2rem;
+}
+
+.about__container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* Mission */
+.about__mission {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about__mission-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.about__mission-icon {
+  width: 48px;
+  height: 48px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.about__mission-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.about__mission-text {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 700px;
+}
+
+.about__mission-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  width: fit-content;
+}
+
+/* Citation */
+.about__citation {
+  background-color: var(--background);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.about__citation-icon {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--border);
+  line-height: 1;
+}
+
+.about__citation-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 600px;
+}
+
+/* Section title */
+.about__section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Valeurs */
+.about__valeurs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.about__valeur-card {
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.about__valeur-card:hover {
+  border-color: var(--primary);
+}
+
+.about__valeur-icon {
+  color: var(--primary);
+}
+
+.about__valeur-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Acteurs */
+.about__acteurs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about__acteur-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  transition: border-color 0.2s;
+}
+
+.about__acteur-card:hover {
+  border-color: var(--primary);
+}
+
+.about__acteur-icon {
+  width: 48px;
+  height: 48px;
+  background-color: var(--primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.about__acteur-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about__acteur-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.about__acteur-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about__hero-title {
+    font-size: 1.8rem;
+  }
+
+  .about__valeurs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about__citation-text {
+    font-size: 1.2rem;
+  }
+}

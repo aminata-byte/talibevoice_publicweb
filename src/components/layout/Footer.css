@@ -1,7 +1,9 @@
 .footer {
-  background-color: var(--primary-dark);
-  padding: 3rem 2rem 0;
-  margin-top: auto;
+  background-color: var(--secondary-light);
+}
+
+.footer__top {
+  padding: 4rem 2rem;
 }
 
 .footer__container {
@@ -10,37 +12,31 @@
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 3rem;
-  padding-bottom: 2rem;
 }
 
 /* Logo */
 .footer__logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: inline-block;
   margin-bottom: 1rem;
 }
 
-.footer__logo-icon {
-  font-size: 20px;
-}
-
-.footer__logo-text {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--white);
+.footer__logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* Description */
 .footer__description {
-  color: var(--secondary-light);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.7;
+  max-width: 300px;
 }
 
 /* Titres colonnes */
 .footer__title {
-  color: var(--accent);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -54,31 +50,57 @@
 }
 
 .footer__links li {
-  color: var(--secondary-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
 .footer__links a {
-  color: var(--secondary-light);
+  color: var(--text-secondary);
   font-size: 14px;
   transition: color 0.2s;
 }
 
 .footer__links a:hover {
-  color: var(--white);
+  color: var(--primary);
+}
+
+.footer__links svg {
+  color: var(--text-light);
+  flex-shrink: 0;
 }
 
 /* Bas du footer */
 .footer__bottom {
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+}
+
+.footer__bottom-container {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--secondary-light);
+  justify-content: space-between;
   font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.footer__bottom-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer__bottom-links a {
+  color: var(--text-secondary);
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.footer__bottom-links a:hover {
+  color: var(--primary);
 }
 
 /* Responsive */
@@ -88,10 +110,15 @@
     gap: 2rem;
   }
 
-  .footer__bottom {
+  .footer__bottom-container {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     text-align: center;
   }
-}
 
+  .footer__bottom-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
