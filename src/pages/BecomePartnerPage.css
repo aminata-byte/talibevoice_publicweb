@@ -1,83 +1,38 @@
-/* Hero */
-.partner__hero {
-  background-color: var(--primary-dark);
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-.partner__hero-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.partner__hero-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 1rem;
-}
-
-.partner__hero-subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.7;
-}
-
-/* Section principale */
 .partner {
   background-color: var(--background);
   padding: 4rem 2rem;
+  min-height: 80vh;
 }
 
 .partner__container {
-  max-width: 1200px;
+  max-width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
 }
 
-/* Avantages */
-.partner__avantages {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.partner__avantage-card {
-  background-color: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
+/* Header */
+.partner__header {
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  text-align: center;
 }
 
-.partner__avantage-icon {
-  font-size: 2.5rem;
-}
-
-.partner__avantage-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+.partner__title {
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.partner__avantage-description {
-  font-size: 14px;
+.partner__subtitle {
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.7;
 }
 
 /* Formulaire */
-.partner__form-container {
-  max-width: 600px;
-  margin: 0 auto;
-  width: 100%;
-}
-
 .partner__form {
   background-color: var(--white);
   border: 1px solid var(--border);
@@ -130,7 +85,7 @@
   font-weight: 600;
   width: 100%;
   transition: background-color 0.2s;
-  margin-top: 0.5rem;
+  cursor: pointer;
 }
 
 .partner__submit:hover {
@@ -145,13 +100,36 @@
   font-style: italic;
 }
 
+/* Lien connexion */
+.partner__login-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.partner__login-link p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.partner__login-btn {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.partner__login-btn:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  .partner__hero-title {
-    font-size: 1.8rem;
-  }
-
-  .partner__avantages {
-    grid-template-columns: 1fr;
+  .partner__title {
+    font-size: 1.5rem;
   }
 }
