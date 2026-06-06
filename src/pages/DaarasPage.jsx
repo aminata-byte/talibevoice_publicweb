@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Search, MapPin, Users, Map, List } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import "./DaarasPage.css";
@@ -184,7 +185,7 @@ function DaarasPage() {
           {/* Filtres */}
           <div className="daaras__filters">
             <div className="daaras__search">
-              <span className="daaras__search-icon">🔍</span>
+              <Search size={16} className="daaras__search-icon" />
               <input
                 type="text"
                 placeholder="Rechercher une Daara..."
@@ -209,12 +210,14 @@ function DaarasPage() {
                 className={`daaras__toggle-btn ${vue === "carte" ? "active" : ""}`}
                 onClick={() => setVue("carte")}
               >
+                <Map size={16} />
                 Carte
               </button>
               <button
                 className={`daaras__toggle-btn ${vue === "liste" ? "active" : ""}`}
                 onClick={() => setVue("liste")}
               >
+                <List size={16} />
                 Liste
               </button>
             </div>
@@ -229,7 +232,7 @@ function DaarasPage() {
                 onClick={() => setSelectedDaara(daara)}
               >
                 <div className="daara__card-image">
-                  <span>🕌</span>
+                  <MapPin size={32} color="var(--primary)" />
                 </div>
                 <div className="daara__card-content">
                   <div className="daara__card-header">
@@ -241,10 +244,10 @@ function DaarasPage() {
                     )}
                   </div>
                   <p className="daara__card-location">
-                    📍 {daara.localisation}
+                    <MapPin size={13} /> {daara.localisation}
                   </p>
                   <p className="daara__card-talibés">
-                    👥 {daara.talibés} Talibés
+                    <Users size={13} /> {daara.talibés} Talibés
                   </p>
                 </div>
               </div>
@@ -264,10 +267,10 @@ function DaarasPage() {
               <div>
                 <h2 className="daara__modal-title">{selectedDaara.nom}</h2>
                 <p className="daara__modal-location">
-                  📍 {selectedDaara.localisation}
+                  <MapPin size={13} /> {selectedDaara.localisation}
                 </p>
                 <p className="daara__modal-talibés">
-                  👥 {selectedDaara.talibés} Talibés
+                  <Users size={13} /> {selectedDaara.talibés} Talibés
                 </p>
               </div>
               <button
@@ -308,7 +311,7 @@ function DaarasPage() {
 
             <div className="daara__modal-footer">
               <a href="/faire-un-don" className="daara__modal-btn">
-                🤝 Faire un don pour ce daara
+                Faire un don pour ce daara
               </a>
             </div>
           </div>
