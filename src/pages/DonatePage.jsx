@@ -3,12 +3,32 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import "./DonatePage.css";
 
+const materiels = [
+  "Riz",
+  "Huile",
+  "Sucre",
+  "Farine",
+  "Lait",
+  "Vêtements",
+  "Livres",
+  "Fournitures scolaires",
+  "Médicaments",
+  "Autre",
+];
+
 function DonatePage() {
   const [typeDon, setTypeDon] = useState("financier");
   const [montant, setMontant] = useState(5000);
   const [autreMontant, setAutreMontant] = useState("");
   const [anonyme, setAnonyme] = useState(false);
-  const [form, setForm] = useState({ nom: "", prenom: "", email: "" });
+  const [paiement, setPaiement] = useState("wave");
+  const [form, setForm] = useState({
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+  });
+  const [items, setItems] = useState([{ materiel: "", quantite: "" }]);
 
   const montants = [1000, 5000, 10000, 25000];
 
@@ -16,9 +36,29 @@ function DonatePage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleItemChange = (index, field, value) => {
+    const newItems = [...items];
+    newItems[index][field] = value;
+    setItems(newItems);
+  };
+
+  const addItem = () => {
+    setItems([...items, { materiel: "", quantite: "" }]);
+  };
+
+  const removeItem = (index) => {
+    setItems(items.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = () => {
-    const montantFinal = autreMontant || montant;
-    alert(`Don de ${montantFinal} FCFA confirmé !`);
+    if (typeDon === "financier") {
+      const montantFinal = autreMontant || montant;
+      alert(
+        `Don financier de ${montantFinal} FCFA via ${paiement === "wave" ? "Wave" : "Orange Money"} confirmé !`,
+      );
+    } else {
+      alert("Don matériel confirmé ! Merci pour votre générosité.");
+    }
   };
 
   return (
@@ -47,84 +87,233 @@ function DonatePage() {
             </div>
           </div>
 
-          {/* Carte impact */}
+          {/* DON FINANCIER */}
           {typeDon === "financier" && (
-            <div className="donate__impact">
-              <span className="donate__impact-label">VOTRE IMPACT</span>
-              <p className="donate__impact-text">
-                {montant >= 5000
-                  ? `${montant.toLocaleString()} FCFA = 1 kit scolaire complet`
-                  : `${montant.toLocaleString()} FCFA = contribution partielle`}
-              </p>
-            </div>
+            <>
+              {/* Carte impact */}
+              <div className="donate__impact">
+                <span className="donate__impact-label">VOTRE IMPACT</span>
+                <p className="donate__impact-text">
+                  {montant >= 5000
+                    ? `${(autreMontant || montant).toLocaleString()} FCFA = 1 kit scolaire complet`
+                    : `${(autreMontant || montant).toLocaleString()} FCFA = contribution partielle`}
+                </p>
+              </div>
+
+              {/* Montants */}
+              <div className="donate__section">
+                <label className="donate__label">Montant du don</label>
+                <div className="donate__amounts">
+                  {montants.map((m) => (
+                    <button
+                      key={m}
+                      className={`donate__amount-btn ${montant === m && !autreMontant ? "active" : ""}`}
+                      onClick={() => {
+                        setMontant(m);
+                        setAutreMontant("");
+                      }}
+                    >
+                      {m.toLocaleString()}
+                    </button>
+                  ))}
+                </div>
+                <div className="donate__custom">
+                  <input
+                    type="number"
+                    placeholder="Autre montant"
+                    value={autreMontant}
+                    onChange={(e) => setAutreMontant(e.target.value)}
+                    className="donate__input"
+                  />
+                  <span className="donate__currency">FCFA</span>
+                </div>
+              </div>
+
+              {/* Type de paiement */}
+              <div className="donate__section">
+                <label className="donate__label">Mode de paiement</label>
+                <div className="donate__payment">
+                  <button
+                    className={`donate__payment-btn ${paiement === "wave" ? "active" : ""}`}
+                    onClick={() => setPaiement("wave")}
+                  >
+                    <span className="donate__payment-icon">🌊</span>
+                    <span>Wave</span>
+                  </button>
+                  <button
+                    className={`donate__payment-btn ${paiement === "orange" ? "active" : ""}`}
+                    onClick={() => setPaiement("orange")}
+                  >
+                    <span className="donate__payment-icon">🟠</span>
+                    <span>Orange Money</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Formulaire facultatif */}
+              <div className="donate__section">
+                <label className="donate__label">
+                  Informations du donateur (facultatif)
+                </label>
+                <div className="donate__row">
+                  <input
+                    type="text"
+                    name="nom"
+                    placeholder="Ex: Diop"
+                    value={form.nom}
+                    onChange={handleForm}
+                    className="donate__input"
+                    disabled={anonyme}
+                  />
+                  <input
+                    type="text"
+                    name="prenom"
+                    placeholder="Ex: Amina"
+                    value={form.prenom}
+                    onChange={handleForm}
+                    className="donate__input"
+                    disabled={anonyme}
+                  />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="amina@email.com"
+                  value={form.email}
+                  onChange={handleForm}
+                  className="donate__input donate__input--full"
+                  disabled={anonyme}
+                />
+                <input
+                  type="tel"
+                  name="telephone"
+                  placeholder="+221 7X XXX XX XX"
+                  value={form.telephone}
+                  onChange={handleForm}
+                  className="donate__input donate__input--full"
+                  disabled={anonyme}
+                />
+              </div>
+            </>
           )}
 
-          {/* Montants */}
-          {typeDon === "financier" && (
+          {/* DON MATERIEL */}
+          {typeDon === "materiel" && (
             <div className="donate__section">
-              <label className="donate__label">Montant du don</label>
-              <div className="donate__amounts">
-                {montants.map((m) => (
-                  <button
-                    key={m}
-                    className={`donate__amount-btn ${montant === m && !autreMontant ? "active" : ""}`}
-                    onClick={() => {
-                      setMontant(m);
-                      setAutreMontant("");
-                    }}
-                  >
-                    {m.toLocaleString()}
-                  </button>
+              <label className="donate__label">Détail du don matériel</label>
+              <div className="donate__materiel-list">
+                {items.map((item, index) => (
+                  <div key={index} className="donate__materiel-item">
+                    <select
+                      value={
+                        materiels.includes(item.materiel)
+                          ? item.materiel
+                          : item.materiel
+                            ? "Autre"
+                            : ""
+                      }
+                      onChange={(e) => {
+                        if (e.target.value !== "Autre") {
+                          handleItemChange(index, "materiel", e.target.value);
+                        } else {
+                          handleItemChange(index, "materiel", "");
+                        }
+                      }}
+                      className="donate__input"
+                    >
+                      <option value="">Sélectionner un matériel</option>
+                      {materiels.map((m) => (
+                        <option key={m} value={m}>
+                          {m}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Champ libre si "Autre" ou matériel inconnu */}
+                    {(!materiels.includes(item.materiel) ||
+                      item.materiel === "") && (
+                      <input
+                        type="text"
+                        placeholder="Précisez le matériel..."
+                        value={
+                          materiels.includes(item.materiel) ? "" : item.materiel
+                        }
+                        onChange={(e) =>
+                          handleItemChange(index, "materiel", e.target.value)
+                        }
+                        className="donate__input"
+                      />
+                    )}
+                    <input
+                      type="number"
+                      placeholder="Quantité (ex: 10 sacs)"
+                      value={item.quantite}
+                      onChange={(e) =>
+                        handleItemChange(index, "quantite", e.target.value)
+                      }
+                      className="donate__input"
+                    />
+                    {items.length > 1 && (
+                      <button
+                        className="donate__remove-btn"
+                        onClick={() => removeItem(index)}
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
-              <div className="donate__custom">
+              <button className="donate__add-btn" onClick={addItem}>
+                + Ajouter un autre matériel
+              </button>
+
+              {/* Infos donateur */}
+              <div className="donate__section" style={{ marginTop: "1rem" }}>
+                <label className="donate__label">
+                  Informations du donateur (facultatif)
+                </label>
+                <div className="donate__row">
+                  <input
+                    type="text"
+                    name="nom"
+                    placeholder="Ex: Diop"
+                    value={form.nom}
+                    onChange={handleForm}
+                    className="donate__input"
+                    disabled={anonyme}
+                  />
+                  <input
+                    type="text"
+                    name="prenom"
+                    placeholder="Ex: Amina"
+                    value={form.prenom}
+                    onChange={handleForm}
+                    className="donate__input"
+                    disabled={anonyme}
+                  />
+                </div>
                 <input
-                  type="number"
-                  placeholder="Autre montant"
-                  value={autreMontant}
-                  onChange={(e) => setAutreMontant(e.target.value)}
-                  className="donate__input"
+                  type="email"
+                  name="email"
+                  placeholder="amina@email.com"
+                  value={form.email}
+                  onChange={handleForm}
+                  className="donate__input donate__input--full"
+                  disabled={anonyme}
                 />
-                <span className="donate__currency">FCFA</span>
+                <input
+                  type="tel"
+                  name="telephone"
+                  placeholder="+221 7X XXX XX XX"
+                  value={form.telephone}
+                  onChange={handleForm}
+                  className="donate__input donate__input--full"
+                  disabled={anonyme}
+                />
               </div>
             </div>
           )}
-
-          {/* Formulaire facultatif */}
-          <div className="donate__section">
-            <label className="donate__label">
-              Informations du donateur (facultatif)
-            </label>
-            <div className="donate__row">
-              <input
-                type="text"
-                name="nom"
-                placeholder="Ex: Diop"
-                value={form.nom}
-                onChange={handleForm}
-                className="donate__input"
-                disabled={anonyme}
-              />
-              <input
-                type="text"
-                name="prenom"
-                placeholder="Ex: Amina"
-                value={form.prenom}
-                onChange={handleForm}
-                className="donate__input"
-                disabled={anonyme}
-              />
-            </div>
-            <input
-              type="email"
-              name="email"
-              placeholder="amina@email.com"
-              value={form.email}
-              onChange={handleForm}
-              className="donate__input donate__input--full"
-              disabled={anonyme}
-            />
-          </div>
 
           {/* Anonyme */}
           <div className="donate__anonymous">
