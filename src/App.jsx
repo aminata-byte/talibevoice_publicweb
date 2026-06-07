@@ -11,6 +11,7 @@ import AboutPage from "./pages/AboutPage";
 import PartnerImpactPage from "./pages/partner/PartnerImpactPage";
 import PartnerProfilePage from "./pages/partner/PartnerProfilePage";
 import ConfidentialitePage from "./pages/ConfidentialitePage";
+import ConditionsPage from "./pages/ConditionsPage";
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
         <Route path="/partenaire/profil" element={<PartnerProfilePage />} />
 
         <Route path="/confidentialite" element={<ConfidentialitePage />} />
+
+        <Route path="/conditions" element={<ConditionsPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,86 @@
+.conditions {
+  background-color: var(--background);
+  padding: 4rem 2rem;
+  min-height: 80vh;
+}
+
+.conditions__container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Header */
+.conditions__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.conditions__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.conditions__date {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Sections */
+.conditions__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.conditions__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--primary);
+}
+
+.conditions__section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.conditions__section-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* Contact */
+.conditions__contact {
+  background-color: var(--primary-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.conditions__contact-link {
+  color: var(--primary-dark);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.conditions__contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .conditions__title {
+    font-size: 1.5rem;
+  }
+}
