@@ -36,9 +36,10 @@ function App() {
           path="/partenaire/talibe-inscrits"
           element={<EnrolledTalibesPage />}
         />
+
+        <Route path="/partenaire/impact" element={<PartnerImpactPage />} />
+        <Route path="/partenaire/profil" element={<PartnerProfilePage />} />
       </Routes>
-      <Route path="/partenaire/impact" element={<PartnerImpactPage />} />
-      <Route path="/partenaire/profil" element={<PartnerProfilePage />} />
     </BrowserRouter>
   );
 }
