@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { KeyRound } from "lucide-react";
 import "./PartnerLoginPage.css";
 
 function PartnerLoginPage() {
@@ -19,7 +20,11 @@ function PartnerLoginPage() {
       <div className="plogin__card">
         {/* Logo */}
         <div className="plogin__logo">
-          <span className="plogin__logo-icon">🏠</span>
+          <img
+            src="/src/assets/logo.jpg"
+            alt="TalibeVoice"
+            className="plogin__logo-img"
+          />
         </div>
 
         {/* Titre */}
@@ -32,7 +37,7 @@ function PartnerLoginPage() {
         <div className="plogin__form-group">
           <label className="plogin__label">Code partenaire</label>
           <div className="plogin__input-wrapper">
-            <span className="plogin__input-icon">🔑</span>
+            <KeyRound size={16} className="plogin__input-icon" />
             <input
               type="text"
               placeholder="Entrez votre code"

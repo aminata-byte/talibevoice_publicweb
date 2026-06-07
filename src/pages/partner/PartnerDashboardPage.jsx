@@ -1,4 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
+import {
+  Bell,
+  LogOut,
+  GraduationCap,
+  Briefcase,
+  Building2,
+  ChevronRight,
+  BarChart3,
+  User,
+} from "lucide-react";
 import "./PartnerDashboardPage.css";
 
 const offres = [
@@ -23,16 +33,21 @@ function PartnerDashboardPage() {
       {/* Header */}
       <div className="pdash__header">
         <div className="pdash__header-left">
-          <span className="pdash__logo-icon">🏠</span>
-          <span className="pdash__logo-text">TalibeVoice</span>
+          <img
+            src="/src/assets/logo.png"
+            alt="TalibeVoice"
+            className="pdash__logo-img"
+          />
         </div>
         <div className="pdash__header-right">
-          <button className="pdash__notif">🔔</button>
+          <button className="pdash__notif">
+            <Bell size={20} />
+          </button>
           <button
             className="pdash__logout"
             onClick={() => navigate("/partenaire/login")}
           >
-            ↩️
+            <LogOut size={20} />
           </button>
         </div>
       </div>
@@ -42,7 +57,7 @@ function PartnerDashboardPage() {
         <div className="pdash__welcome">
           <p className="pdash__welcome-label">Dashboard Partenaire</p>
           <h2 className="pdash__welcome-title">Bienvenue, Partenaire Alpha</h2>
-          <p className="pdash__welcome-code">🏷️ Code: DT-2024-X1</p>
+          <p className="pdash__welcome-code">Code: DT-2024-X1</p>
         </div>
 
         {/* Stats */}
@@ -69,22 +84,31 @@ function PartnerDashboardPage() {
               to="/partenaire/soumettre-offre"
               className="pdash__action-btn"
             >
-              <span>🎓 Soumettre offre de formation</span>
-              <span>›</span>
+              <div className="pdash__action-left">
+                <GraduationCap size={20} />
+                <span>Soumettre offre de formation</span>
+              </div>
+              <ChevronRight size={18} />
             </Link>
             <Link
               to="/partenaire/soumettre-offre"
               className="pdash__action-btn"
             >
-              <span>💼 Soumettre offre de stage</span>
-              <span>›</span>
+              <div className="pdash__action-left">
+                <Briefcase size={20} />
+                <span>Soumettre offre de stage</span>
+              </div>
+              <ChevronRight size={18} />
             </Link>
             <Link
               to="/partenaire/soumettre-offre"
               className="pdash__action-btn"
             >
-              <span>🏢 Soumettre offre d'emploi</span>
-              <span>›</span>
+              <div className="pdash__action-left">
+                <Building2 size={20} />
+                <span>Soumettre offre d'emploi</span>
+              </div>
+              <ChevronRight size={18} />
             </Link>
           </div>
         </div>
@@ -134,19 +158,19 @@ function PartnerDashboardPage() {
       {/* Bottom navigation */}
       <div className="pdash__bottom-nav">
         <button className="pdash__nav-btn active">
-          <span>🏠</span>
+          <Building2 size={20} />
           <span>Accueil</span>
         </button>
         <Link to="/partenaire/soumettre-offre" className="pdash__nav-btn">
-          <span>📋</span>
+          <Briefcase size={20} />
           <span>Offres</span>
         </Link>
         <button className="pdash__nav-btn">
-          <span>📊</span>
+          <BarChart3 size={20} />
           <span>Impact</span>
         </button>
         <button className="pdash__nav-btn">
-          <span>👤</span>
+          <User size={20} />
           <span>Profil</span>
         </button>
       </div>
