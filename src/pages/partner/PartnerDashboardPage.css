@@ -20,14 +20,10 @@
   gap: 8px;
 }
 
-.pdash__logo-icon {
-  font-size: 20px;
-}
-
-.pdash__logo-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--white);
+.pdash__logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
 }
 
 .pdash__header-right {
@@ -39,8 +35,12 @@
 .pdash__notif,
 .pdash__logout {
   background: transparent;
-  font-size: 20px;
   color: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
 }
 
 /* Content */
@@ -143,6 +143,12 @@
 .pdash__action-btn:hover {
   border-color: var(--primary);
   color: var(--primary);
+}
+
+.pdash__action-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* Table offres */
@@ -258,10 +264,9 @@
   background: transparent;
   padding: 6px 0;
   transition: color 0.2s;
-}
-
-.pdash__nav-btn span:first-child {
-  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
 }
 
 .pdash__nav-btn.active {

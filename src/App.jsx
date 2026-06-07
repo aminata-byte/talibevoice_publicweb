@@ -8,6 +8,8 @@ import PartnerDashboardPage from "./pages/partner/PartnerDashboardPage";
 import SubmitOfferPage from "./pages/partner/SubmitOfferPage";
 import EnrolledTalibesPage from "./pages/partner/EnrolledTalibesPage";
 import AboutPage from "./pages/AboutPage";
+import PartnerImpactPage from "./pages/partner/PartnerImpactPage";
+import PartnerProfilePage from "./pages/partner/PartnerProfilePage";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           element={<EnrolledTalibesPage />}
         />
       </Routes>
+      <Route path="/partenaire/impact" element={<PartnerImpactPage />} />
+      <Route path="/partenaire/profil" element={<PartnerProfilePage />} />
     </BrowserRouter>
   );
 }

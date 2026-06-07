@@ -34,7 +34,7 @@ function PartnerDashboardPage() {
       <div className="pdash__header">
         <div className="pdash__header-left">
           <img
-            src="/src/assets/logo.png"
+            src="/src/assets/logo.jpg"
             alt="TalibeVoice"
             className="pdash__logo-img"
           />
