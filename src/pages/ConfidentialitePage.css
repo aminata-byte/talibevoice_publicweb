@@ -1,0 +1,91 @@
+.confidentialite {
+  background-color: var(--background);
+  padding: 4rem 2rem;
+  min-height: 80vh;
+}
+
+.confidentialite__container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Header */
+.confidentialite__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.confidentialite__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.confidentialite__date {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Sections */
+.confidentialite__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.confidentialite__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confidentialite__section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.confidentialite__section-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.confidentialite__section-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+/* Contact */
+.confidentialite__contact {
+  background-color: var(--primary-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.confidentialite__contact-link {
+  color: var(--primary-dark);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.confidentialite__contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .confidentialite__title {
+    font-size: 1.5rem;
+  }
+}

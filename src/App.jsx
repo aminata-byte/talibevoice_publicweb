@@ -10,6 +10,7 @@ import EnrolledTalibesPage from "./pages/partner/EnrolledTalibesPage";
 import AboutPage from "./pages/AboutPage";
 import PartnerImpactPage from "./pages/partner/PartnerImpactPage";
 import PartnerProfilePage from "./pages/partner/PartnerProfilePage";
+import ConfidentialitePage from "./pages/ConfidentialitePage";
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
 
         <Route path="/partenaire/impact" element={<PartnerImpactPage />} />
         <Route path="/partenaire/profil" element={<PartnerProfilePage />} />
+
+        <Route path="/confidentialite" element={<ConfidentialitePage />} />
       </Routes>
     </BrowserRouter>
   );
