@@ -20,21 +20,18 @@
   gap: 8px;
 }
 
-.etalibes__logo-icon {
-  font-size: 20px;
-}
-
-.etalibes__logo-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--white);
+.etalibes__logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
 }
 
 .etalibes__logout {
   background: transparent;
-  font-size: 20px;
   color: var(--white);
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 /* Container */
@@ -69,6 +66,9 @@
 }
 
 .etalibes__export {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background-color: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -102,6 +102,7 @@
   background-color: var(--white);
   flex: 1;
   min-width: 200px;
+  color: var(--text-light);
 }
 
 .etalibes__search-input {
@@ -172,6 +173,9 @@
   font-size: 13px;
   color: var(--primary);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Badges */
@@ -222,10 +226,7 @@
   padding: 6px 0;
   transition: color 0.2s;
   cursor: pointer;
-}
-
-.etalibes__nav-btn span:first-child {
-  font-size: 20px;
+  border: none;
 }
 
 .etalibes__nav-btn.active {

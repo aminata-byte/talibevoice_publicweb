@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Send } from "lucide-react";
 import "./SubmitOfferPage.css";
 
 function SubmitOfferPage() {
@@ -39,7 +40,8 @@ function SubmitOfferPage() {
           className="soffer__back"
           onClick={() => navigate("/partenaire/dashboard")}
         >
-          ← Soumettre une offre
+          <ArrowLeft size={18} />
+          Soumettre une offre
         </button>
       </div>
 
@@ -304,11 +306,12 @@ function SubmitOfferPage() {
 
         {/* Bouton + Note */}
         <button className="soffer__submit" onClick={handleSubmit}>
-          ➤ Soumettre l'offre
+          <Send size={18} />
+          Soumettre l'offre
         </button>
 
         <div className="soffer__note">
-          <span>ℹ️</span>
+          <Send size={14} />
           <p>
             Note : Votre offre sera validée par l'administrateur avant
             publication.

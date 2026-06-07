@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Search,
+  Download,
+  LogOut,
+  Home,
+  Briefcase,
+  BarChart3,
+  User,
+  GraduationCap,
+} from "lucide-react";
 import "./EnrolledTalibesPage.css";
 
 const talibes = [
@@ -78,14 +88,17 @@ function EnrolledTalibesPage() {
       {/* Header */}
       <div className="etalibes__header">
         <div className="etalibes__header-left">
-          <span className="etalibes__logo-icon">🏠</span>
-          <span className="etalibes__logo-text">TalibeVoice</span>
+          <img
+            src="/src/assets/logo.jpg"
+            alt="TalibeVoice"
+            className="etalibes__logo-img"
+          />
         </div>
         <button
           className="etalibes__logout"
           onClick={() => navigate("/partenaire/login")}
         >
-          ↩️
+          <LogOut size={20} />
         </button>
       </div>
 
@@ -98,13 +111,16 @@ function EnrolledTalibesPage() {
               Gérer les inscriptions aux formations
             </p>
           </div>
-          <button className="etalibes__export">⬇️ Exporter</button>
+          <button className="etalibes__export">
+            <Download size={16} />
+            Exporter
+          </button>
         </div>
 
         {/* Filtres */}
         <div className="etalibes__filters">
           <div className="etalibes__search">
-            <span>🔍</span>
+            <Search size={16} />
             <input
               type="text"
               placeholder="Rechercher un talibé..."
@@ -139,7 +155,9 @@ function EnrolledTalibesPage() {
               <p className="etalib__card-info">
                 Inscrit le {talib.date} • {talib.age} ans
               </p>
-              <p className="etalib__card-offre">🎓 {talib.offre}</p>
+              <p className="etalib__card-offre">
+                <GraduationCap size={14} /> {talib.offre}
+              </p>
             </div>
           ))}
         </div>
@@ -151,19 +169,19 @@ function EnrolledTalibesPage() {
           className="etalibes__nav-btn"
           onClick={() => navigate("/partenaire/dashboard")}
         >
-          <span>🏠</span>
+          <Home size={20} />
           <span>Accueil</span>
         </button>
         <button className="etalibes__nav-btn active">
-          <span>📋</span>
+          <Briefcase size={20} />
           <span>Offres</span>
         </button>
         <button className="etalibes__nav-btn">
-          <span>📊</span>
+          <BarChart3 size={20} />
           <span>Impact</span>
         </button>
         <button className="etalibes__nav-btn">
-          <span>👤</span>
+          <User size={20} />
           <span>Profil</span>
         </button>
       </div>
