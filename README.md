@@ -22,31 +22,67 @@ Cette application est destinée aux **donateurs** et aux **partenaires**. Elle p
 
 ## Design System
 
-| Élément            | Valeur               |
-| ------------------ | -------------------- |
-| Couleur primaire   | `#1B7D4B`            |
-| Couleur secondaire | `#2D3748`            |
-| Accent             | `#FFD54F`            |
-| Police             | Inter (Google Fonts) |
+| Élément | Valeur |
+|---|---|
+| Couleur primaire | `#1B7D4B` |
+| Couleur secondaire | `#2D3748` |
+| Couleur tertiaire | `#AD505A` |
+| Accent | `#FFD54F` |
+| Fond | `#F7FAFC` |
+| Police | Inter (Google Fonts) |
 
 ## Pages
 
-| Page                 | Route                         |
-| -------------------- | ----------------------------- |
-| Landing page         | `/`                           |
-| À propos             | `/a-propos`                   |
-| Explorer les daaras  | `/daaras`                     |
-| Faire un don         | `/faire-un-don`               |
-| Devenir partenaire   | `/devenir-partenaire`         |
-| Login partenaire     | `/partenaire/login`           |
-| Dashboard partenaire | `/partenaire/dashboard`       |
-| Soumettre une offre  | `/partenaire/soumettre-offre` |
-| Talibés inscrits     | `/partenaire/talibe-inscrits` |
-| Impact partenaire    | `/partenaire/impact`          |
-| Profil partenaire    | `/partenaire/profil`          |
-| Confidentialité      | `/confidentialite`            |
-| Conditions           | `/conditions`                 |
-| Contact              | `/contact`                    |
+| Page | Route | Accès |
+|---|---|---|
+| Landing page | `/` | Public |
+| À propos | `/a-propos` | Public |
+| Explorer les daaras | `/daaras` | Public |
+| Faire un don | `/faire-un-don` | Public |
+| Devenir partenaire | `/devenir-partenaire` | Public |
+| Confidentialité | `/confidentialite` | Public |
+| Conditions | `/conditions` | Public |
+| Contact | `/contact` | Public |
+| Login partenaire | `/partenaire/login` | Public |
+| Dashboard partenaire | `/partenaire/dashboard` | Protégé |
+| Soumettre une offre | `/partenaire/soumettre-offre` | Protégé |
+| Talibés inscrits | `/partenaire/talibe-inscrits` | Protégé |
+| Impact partenaire | `/partenaire/impact` | Protégé |
+| Profil partenaire | `/partenaire/profil` | Protégé |
+
+## Architecture du projet
+
+src/
+├── assets/               # Images et logos
+├── components/
+│   ├── layout/           # Navbar, Footer, ProtectedRoute
+│   └── sections/         # HeroSection, StatsSection, HowItWorks...
+├── context/
+│   └── PartnerAuthContext.jsx  # Contexte authentification partenaire
+├── hooks/
+│   ├── usePartnerAuth.js       # Hook authentification partenaire
+│   ├── useDaaras.js            # Hook chargement des daaras
+│   └── useDon.js               # Hook soumission des dons
+├── pages/
+│   ├── partner/          # Pages espace partenaire
+│   └── *.jsx             # Pages publiques
+├── services/
+│   ├── api.js            # Instance Axios + intercepteurs
+│   ├── daaraService.js   # Appels API daaras
+│   ├── donService.js     # Appels API dons
+│   └── partnerService.js # Appels API partenaires
+├── styles/
+│   └── variables.css     # Tokens CSS design system
+├── App.jsx               # Routes React Router
+└── main.jsx
+
+## Variables d'environnement
+
+Crée un fichier `.env` à la racine :
+
+```env
+VITE_API_URL=http://localhost:8000/api
+```
 
 ## Lancer le projet
 
@@ -55,29 +91,19 @@ npm install
 npm run dev
 ```
 
-## Structure du projet
+## État de connexion API
 
-src/
-├── assets/ # Images et logos
-├── components/
-│ ├── layout/ # Navbar, Footer
-│ └── sections/ # HeroSection, StatsSection, HowItWorks...
-├── pages/
-│ ├── partner/ # Pages espace partenaire
-│ └── \*.jsx # Pages publiques
-├── styles/
-│ └── variables.css # Tokens CSS design system
-├── App.jsx # Routes React Router
-└── main.jsx
+> Les données sont actuellement en mode mock (statiques).
+> La connexion au backend Laravel sera activée une fois l'API déployée.
 
 ## Architecture monorepo TalibeVoice
 
-| App                        | Repo                    | Acteurs              |
-| -------------------------- | ----------------------- | -------------------- |
+| App | Repo | Acteurs |
+|---|---|---|
 | App Web Publique (ce repo) | `talibevoice_publicweb` | Donateur, Partenaire |
-| App Web Admin              | `talibevoice_adminweb`  | Administrateur       |
-| App Mobile PWA             | `talibevoice_mobilepwa` | AgentDeTerrain       |
-| API Backend                | `talibevoice_api`       | Laravel + PostgreSQL |
+| App Web Admin | `talibevoice_adminweb` | Administrateur |
+| App Mobile PWA | `talibevoice_mobilepwa` | AgentDeTerrain |
+| API Backend | `talibevoice_backend` | Laravel + PostgreSQL |
 
 ## Auteur
 
