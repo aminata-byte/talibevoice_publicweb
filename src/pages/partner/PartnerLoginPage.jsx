@@ -1,18 +1,29 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { KeyRound } from "lucide-react";
+import { usePartnerAuthContext } from "../../context/PartnerAuthContext";
 import "./PartnerLoginPage.css";
 
 function PartnerLoginPage() {
   const [code, setCode] = useState("");
-  const navigate = useNavigate();
+  const { loading, error } = usePartnerAuthContext();
 
   const handleAcceder = () => {
     if (code.trim() === "") {
-      alert("Veuillez entrer votre code partenaire.");
       return;
     }
-    navigate("/partenaire/dashboard");
+
+    localStorage.setItem("token", "temp_token");
+    localStorage.setItem(
+      "partenaire",
+      JSON.stringify({
+        id: 1,
+        nom: "Partenaire Alpha",
+        code_partenaire: code,
+      }),
+    );
+
+    window.location.href = "/partenaire/dashboard";
   };
 
   return (
@@ -39,6 +50,8 @@ function PartnerLoginPage() {
           <div className="plogin__input-wrapper">
             <KeyRound size={16} className="plogin__input-icon" />
             <input
+              id="code_partenaire"
+              name="code_partenaire"
               type="text"
               placeholder="Entrez votre code"
               value={code}
@@ -48,9 +61,26 @@ function PartnerLoginPage() {
           </div>
         </div>
 
+        {/* Erreur */}
+        {error && (
+          <p
+            style={{
+              color: "var(--tertiary)",
+              fontSize: "13px",
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </p>
+        )}
+
         {/* Bouton */}
-        <button className="plogin__btn" onClick={handleAcceder}>
-          Accéder
+        <button
+          className="plogin__btn"
+          onClick={handleAcceder}
+          disabled={loading}
+        >
+          {loading ? "Connexion..." : "Accéder"}
         </button>
 
         {/* Lien */}
