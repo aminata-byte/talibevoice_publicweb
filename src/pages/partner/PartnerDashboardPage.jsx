@@ -165,11 +165,17 @@ function PartnerDashboardPage() {
           <Briefcase size={20} />
           <span>Offres</span>
         </Link>
-        <button className="pdash__nav-btn">
+        <button
+          className="pdash__nav-btn"
+          onClick={() => navigate("/partenaire/impact")}
+        >
           <BarChart3 size={20} />
           <span>Impact</span>
         </button>
-        <button className="pdash__nav-btn">
+        <button
+          className="pdash__nav-btn"
+          onClick={() => navigate("/partenaire/profil")}
+        >
           <User size={20} />
           <span>Profil</span>
         </button>
