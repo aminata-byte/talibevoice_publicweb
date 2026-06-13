@@ -1,35 +1,50 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { KeyRound } from "lucide-react";
-import { usePartnerAuthContext } from "../../context/PartnerAuthContext";
 import "./PartnerLoginPage.css";
 
 function PartnerLoginPage() {
   const [code, setCode] = useState("");
-  const { loading, error } = usePartnerAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleAcceder = () => {
+  const handleAcceder = async () => {
     if (code.trim() === "") {
+      setError("Veuillez entrer votre code partenaire.");
       return;
     }
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/partenaires/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code_partenaire: code }),
+        },
+      );
 
-    localStorage.setItem("token", "temp_token");
-    localStorage.setItem(
-      "partenaire",
-      JSON.stringify({
-        id: 1,
-        nom: "Partenaire Alpha",
-        code_partenaire: code,
-      }),
-    );
+      const data = await response.json();
 
-    window.location.href = "/partenaire/dashboard";
+      if (!response.ok) {
+        setError(data.message || "Code partenaire invalide.");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("partenaire", JSON.stringify(data.partenaire));
+      window.location.href = "/partenaire/dashboard";
+    } catch (err) {
+      setError("Erreur de connexion. Vérifiez que le serveur est démarré.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="plogin">
       <div className="plogin__card">
-        {/* Logo */}
         <div className="plogin__logo">
           <img
             src="/src/assets/logo.jpg"
@@ -38,13 +53,11 @@ function PartnerLoginPage() {
           />
         </div>
 
-        {/* Titre */}
         <h1 className="plogin__title">Espace Partenaire</h1>
         <p className="plogin__subtitle">
           Veuillez vous authentifier pour continuer
         </p>
 
-        {/* Champ code */}
         <div className="plogin__form-group">
           <label className="plogin__label">Code partenaire</label>
           <div className="plogin__input-wrapper">
@@ -56,12 +69,12 @@ function PartnerLoginPage() {
               placeholder="Entrez votre code"
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAcceder()}
               className="plogin__input"
             />
           </div>
         </div>
 
-        {/* Erreur */}
         {error && (
           <p
             style={{
@@ -74,7 +87,6 @@ function PartnerLoginPage() {
           </p>
         )}
 
-        {/* Bouton */}
         <button
           className="plogin__btn"
           onClick={handleAcceder}
@@ -83,7 +95,6 @@ function PartnerLoginPage() {
           {loading ? "Connexion..." : "Accéder"}
         </button>
 
-        {/* Lien */}
         <p className="plogin__link">
           Pas encore partenaire ?{" "}
           <Link to="/devenir-partenaire">Candidater ici</Link>
