@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Lock, Plus, X } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import donService from "../services/donService";
 import "./DonatePage.css";
 
 const materiels = [
@@ -23,6 +24,7 @@ function DonatePage() {
   const [autreMontant, setAutreMontant] = useState("");
   const [anonyme, setAnonyme] = useState(false);
   const [paiement, setPaiement] = useState("wave");
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     nom: "",
     prenom: "",
@@ -51,14 +53,38 @@ function DonatePage() {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
-    if (typeDon === "financier") {
-      const montantFinal = autreMontant || montant;
-      alert(
-        `Don financier de ${montantFinal} FCFA via ${paiement === "wave" ? "Wave" : "Orange Money"} confirmé !`,
-      );
-    } else {
-      alert("Don matériel confirmé ! Merci pour votre générosité.");
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      if (typeDon === "financier") {
+        const montantFinal = autreMontant || montant;
+        await donService.submitFinancier({
+          montant: montantFinal,
+          paiement,
+          nom: form.nom,
+          prenom: form.prenom,
+          email: form.email,
+          telephone: form.telephone,
+          anonyme,
+        });
+        alert(
+          `Don de ${montantFinal} FCFA via ${paiement === "wave" ? "Wave" : "Orange Money"} soumis avec succès ! Merci pour votre générosité.`,
+        );
+      } else {
+        await donService.submitMateriel({
+          items,
+          nom: form.nom,
+          prenom: form.prenom,
+          email: form.email,
+          telephone: form.telephone,
+          anonyme,
+        });
+        alert("Don matériel soumis avec succès ! Merci pour votre générosité.");
+      }
+    } catch (err) {
+      alert("Erreur lors de la soumission du don. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,7 +117,6 @@ function DonatePage() {
           {/* DON FINANCIER */}
           {typeDon === "financier" && (
             <>
-              {/* Carte impact */}
               <div className="donate__impact">
                 <span className="donate__impact-label">VOTRE IMPACT</span>
                 <p className="donate__impact-text">
@@ -101,7 +126,6 @@ function DonatePage() {
                 </p>
               </div>
 
-              {/* Montants */}
               <div className="donate__section">
                 <label className="donate__label">Montant du don</label>
                 <div className="donate__amounts">
@@ -130,7 +154,6 @@ function DonatePage() {
                 </div>
               </div>
 
-              {/* Type de paiement */}
               <div className="donate__section">
                 <label className="donate__label">Mode de paiement</label>
                 <div className="donate__payment">
@@ -159,7 +182,6 @@ function DonatePage() {
                 </div>
               </div>
 
-              {/* Formulaire facultatif */}
               <div className="donate__section">
                 <label className="donate__label">
                   Informations du donateur (facultatif)
@@ -277,7 +299,6 @@ function DonatePage() {
                 Ajouter un autre matériel
               </button>
 
-              {/* Infos donateur */}
               <div className="donate__section" style={{ marginTop: "1rem" }}>
                 <label className="donate__label">
                   Informations du donateur (facultatif)
@@ -336,9 +357,13 @@ function DonatePage() {
           </div>
 
           {/* Bouton confirmer */}
-          <button className="donate__submit" onClick={handleSubmit}>
+          <button
+            className="donate__submit"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             <Lock size={18} />
-            Confirmer le don
+            {loading ? "Envoi en cours..." : "Confirmer le don"}
           </button>
         </div>
       </div>

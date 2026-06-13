@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import partnerService from "../services/partnerService";
 import "./BecomePartnerPage.css";
 
 function BecomePartnerPage() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     organisation: "",
     domaine: "Formation",
@@ -19,11 +21,25 @@ function BecomePartnerPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    alert(
-      "Candidature soumise ! Vous recevrez votre code partenaire sous 48h.",
-    );
-    navigate("/");
+  const handleSubmit = async () => {
+    if (!form.organisation || !form.email || !form.contact) {
+      alert("Veuillez remplir les champs obligatoires.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await partnerService.register(form);
+      alert(
+        "Candidature soumise ! Vous recevrez votre code partenaire sous 48h.",
+      );
+      navigate("/");
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Erreur lors de la soumission.";
+      alert(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,7 +48,6 @@ function BecomePartnerPage() {
 
       <div className="partner">
         <div className="partner__container">
-          {/* Titre */}
           <div className="partner__header">
             <h1 className="partner__title">Devenir Partenaire</h1>
             <p className="partner__subtitle">
@@ -42,7 +57,6 @@ function BecomePartnerPage() {
             </p>
           </div>
 
-          {/* Formulaire */}
           <div className="partner__form">
             <div className="partner__form-group">
               <label className="partner__label">Nom de l'organisation</label>
@@ -119,15 +133,18 @@ function BecomePartnerPage() {
               />
             </div>
 
-            <button className="partner__submit" onClick={handleSubmit}>
-              Soumettre ma candidature →
+            <button
+              className="partner__submit"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "Envoi en cours..." : "Soumettre ma candidature →"}
             </button>
 
             <p className="partner__note">
               Vous recevrez votre code partenaire sous 48h après validation.
             </p>
 
-            {/* Lien connexion */}
             <div className="partner__login-link">
               <p>Vous êtes déjà partenaire ?</p>
               <Link to="/partenaire/login" className="partner__login-btn">
