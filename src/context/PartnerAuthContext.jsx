@@ -37,7 +37,7 @@ export function PartnerAuthProvider({ children }) {
   };
 
   const isAuthenticated = () => {
-    return !!partenaire && !!localStorage.getItem("token");
+    return !!localStorage.getItem("token");
   };
 
   return (

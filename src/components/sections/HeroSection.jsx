@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Heart, MapPin, Leaf } from "lucide-react";
 import "./HeroSection.css";
+import { TrendingUp } from "lucide-react";
 
 function HeroSection() {
   return (
@@ -49,7 +50,9 @@ function HeroSection() {
           />
           {/* Card flottante */}
           <div className="hero__card">
-            <span className="hero__card-icon">📈</span>
+            <span className="hero__card-icon">
+              <TrendingUp size={20} />
+            </span>
             <div>
               <p className="hero__card-title">Progression 2024</p>
               <p className="hero__card-text">

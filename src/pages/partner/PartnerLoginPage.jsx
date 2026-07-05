@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { KeyRound } from "lucide-react";
+import api from "../../services/api";
 import "./PartnerLoginPage.css";
 
 function PartnerLoginPage() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleAcceder = async () => {
     if (code.trim() === "") {
@@ -16,27 +18,18 @@ function PartnerLoginPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/partenaires/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code_partenaire: code }),
-        },
+      const response = await api.post("/partenaires/login", {
+        code_partenaire: code,
+      });
+
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem(
+        "partenaire",
+        JSON.stringify(response.data.partenaire),
       );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Code partenaire invalide.");
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("partenaire", JSON.stringify(data.partenaire));
-      window.location.href = "/partenaire/dashboard";
+      navigate("/partenaire/dashboard");
     } catch (err) {
-      setError("Erreur de connexion. Vérifiez que le serveur est démarré.");
+      setError(err.response?.data?.message || "Code partenaire invalide.");
     } finally {
       setLoading(false);
     }
@@ -63,8 +56,6 @@ function PartnerLoginPage() {
           <div className="plogin__input-wrapper">
             <KeyRound size={16} className="plogin__input-icon" />
             <input
-              id="code_partenaire"
-              name="code_partenaire"
               type="text"
               placeholder="Entrez votre code"
               value={code}
