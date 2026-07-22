@@ -7,7 +7,6 @@ import "./BecomePartnerPage.css";
 
 function BecomePartnerPage() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     organisation: "",
     domaine: "Formation",
@@ -16,17 +15,20 @@ function BecomePartnerPage() {
     telephone: "",
     motivation: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleForm = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
-    if (!form.organisation || !form.email || !form.contact) {
-      alert("Veuillez remplir les champs obligatoires.");
+    if (!form.organisation || !form.domaine || !form.contact || !form.email) {
+      setError("Veuillez remplir tous les champs obligatoires.");
       return;
     }
     setLoading(true);
+    setError(null);
     try {
       await partnerService.register(form);
       alert(
@@ -34,9 +36,10 @@ function BecomePartnerPage() {
       );
       navigate("/");
     } catch (err) {
-      const message =
-        err.response?.data?.message || "Erreur lors de la soumission.";
-      alert(message);
+      setError(
+        err.response?.data?.message ||
+          "Impossible de soumettre la candidature. Vérifiez les champs.",
+      );
     } finally {
       setLoading(false);
     }
@@ -132,6 +135,12 @@ function BecomePartnerPage() {
                 rows={5}
               />
             </div>
+
+            {error && (
+              <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+                {error}
+              </p>
+            )}
 
             <button
               className="partner__submit"

@@ -30,9 +30,15 @@ const donService = {
     return response.data;
   },
 
-  // Récupérer tous les dons (public)
+  // Récupérer les statistiques des dons (public)
   getStats: async () => {
     const response = await api.get("/dons/stats");
+    return response.data;
+  },
+
+  // Récupérer le statut d'un don via sa référence
+  getStatut: async (reference) => {
+    const response = await api.get(`/dons/statut/${reference}`);
     return response.data;
   },
 };

@@ -1,72 +1,69 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Search,
-  Download,
-  LogOut,
-  Home,
-  Briefcase,
-  BarChart3,
-  User,
-  GraduationCap,
-} from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Search, Download, GraduationCap } from "lucide-react";
+import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
+import PartnerSubNav from "../../components/layout/PartnerSubNav";
+import partnerService from "../../services/partnerService";
 import "./EnrolledTalibesPage.css";
 
-const talibes = [
-  {
-    id: 1,
-    nom: "Mamadou Faye",
-    date: "12/05/2024",
-    age: 16,
-    offre: "Boulangerie Pro",
-    statut: "En cours",
-  },
-  {
-    id: 2,
-    nom: "Saliou Diallo",
-    date: "05/04/2024",
-    age: 14,
-    offre: "Maraîchage Moderne",
-    statut: "En attente",
-  },
-  {
-    id: 3,
-    nom: "Omar Sylla",
-    date: "15/01/2024",
-    age: 17,
-    offre: "Couture & Design",
-    statut: "Clôturé",
-  },
-  {
-    id: 4,
-    nom: "Abdoulaye Ndiaye",
-    date: "22/05/2024",
-    age: 15,
-    offre: "Informatique de gestion",
-    statut: "En cours",
-  },
-  {
-    id: 5,
-    nom: "Ibrahim Kane",
-    date: "10/05/2024",
-    age: 14,
-    offre: "Boulangerie Pro",
-    statut: "En attente",
-  },
-];
+const calculerAge = (dateNaissance) => {
+  if (!dateNaissance) return null;
+  const naissance = new Date(dateNaissance);
+  const diff = new Date() - naissance;
+  return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+};
 
-const offres = [
-  "Filtrer par offre",
-  "Boulangerie Pro",
-  "Maraîchage Moderne",
-  "Couture & Design",
-  "Informatique de gestion",
-];
+const STATUT_LABELS = {
+  en_attente: "En attente",
+  valide: "En cours",
+  en_cours: "En cours",
+  cloture: "Clôturé",
+};
 
 function EnrolledTalibesPage() {
-  const navigate = useNavigate();
   const [recherche, setRecherche] = useState("");
   const [offre, setOffre] = useState("Filtrer par offre");
+  const [insertions, setInsertions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchTalibes = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await partnerService.getTalibesInscrits();
+      setInsertions(data);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Impossible de charger les talibés inscrits.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTalibes();
+  }, []);
+
+  const talibes = insertions.map((insertion) => ({
+    id: insertion.id,
+    nom: `${insertion.talibe?.prenom ?? ""} ${insertion.talibe?.nom ?? ""}`.trim(),
+    date: insertion.date_insertion
+      ? new Date(insertion.date_insertion).toLocaleDateString("fr-FR")
+      : new Date(insertion.created_at).toLocaleDateString("fr-FR"),
+    age: calculerAge(insertion.talibe?.date_naissance),
+    offre: insertion.formation?.titre || insertion.poste || "—",
+    statut: STATUT_LABELS[insertion.statut] || insertion.statut,
+  }));
+
+  const offresDisponibles = useMemo(() => {
+    const titres = talibes
+      .map((t) => t.offre)
+      .filter((t, i, arr) => t && arr.indexOf(t) === i);
+    return ["Filtrer par offre", ...titres];
+  }, [talibes]);
 
   const talibsFiltres = talibes.filter((t) => {
     const matchRecherche = t.nom
@@ -84,24 +81,11 @@ function EnrolledTalibesPage() {
   };
 
   return (
-    <div className="etalibes">
-      {/* Header */}
-      <div className="etalibes__header">
-        <div className="etalibes__header-left">
-          <img
-            src="/src/assets/logo.jpg"
-            alt="TalibeVoice"
-            className="etalibes__logo-img"
-          />
-        </div>
-        <button
-          className="etalibes__logout"
-          onClick={() => navigate("/partenaire/login")}
-        >
-          <LogOut size={20} />
-        </button>
-      </div>
+    <div>
+      <Navbar />
+      <PartnerSubNav />
 
+      <div className="etalibes">
       <div className="etalibes__container">
         {/* Titre + Export */}
         <div className="etalibes__top">
@@ -134,13 +118,25 @@ function EnrolledTalibesPage() {
             value={offre}
             onChange={(e) => setOffre(e.target.value)}
           >
-            {offres.map((o) => (
+            {offresDisponibles.map((o) => (
               <option key={o} value={o}>
                 {o}
               </option>
             ))}
           </select>
         </div>
+
+        {error && (
+          <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+            {error}
+          </p>
+        )}
+
+        {loading && <p className="etalibes__subtitle">Chargement...</p>}
+
+        {!loading && !error && talibsFiltres.length === 0 && (
+          <p className="etalibes__subtitle">Aucun talibé inscrit pour le moment.</p>
+        )}
 
         {/* Liste */}
         <div className="etalibes__list">
@@ -153,7 +149,8 @@ function EnrolledTalibesPage() {
                 </span>
               </div>
               <p className="etalib__card-info">
-                Inscrit le {talib.date} • {talib.age} ans
+                Inscrit le {talib.date}
+                {talib.age !== null ? ` • ${talib.age} ans` : ""}
               </p>
               <p className="etalib__card-offre">
                 <GraduationCap size={14} /> {talib.offre}
@@ -162,29 +159,9 @@ function EnrolledTalibesPage() {
           ))}
         </div>
       </div>
-
-      {/* Bottom nav */}
-      <div className="etalibes__bottom-nav">
-        <button
-          className="etalibes__nav-btn"
-          onClick={() => navigate("/partenaire/dashboard")}
-        >
-          <Home size={20} />
-          <span>Accueil</span>
-        </button>
-        <button className="etalibes__nav-btn active">
-          <Briefcase size={20} />
-          <span>Offres</span>
-        </button>
-        <button className="etalibes__nav-btn">
-          <BarChart3 size={20} />
-          <span>Impact</span>
-        </button>
-        <button className="etalibes__nav-btn">
-          <User size={20} />
-          <span>Profil</span>
-        </button>
       </div>
+
+      <Footer />
     </div>
   );
 }

@@ -24,7 +24,6 @@ function DonatePage() {
   const [autreMontant, setAutreMontant] = useState("");
   const [anonyme, setAnonyme] = useState(false);
   const [paiement, setPaiement] = useState("wave");
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     nom: "",
     prenom: "",
@@ -32,6 +31,8 @@ function DonatePage() {
     telephone: "",
   });
   const [items, setItems] = useState([{ materiel: "", quantite: "" }]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const montants = [1000, 5000, 10000, 25000];
 
@@ -55,34 +56,42 @@ function DonatePage() {
 
   const handleSubmit = async () => {
     setLoading(true);
+    setError(null);
     try {
       if (typeDon === "financier") {
-        const montantFinal = autreMontant || montant;
-        await donService.submitFinancier({
+        const montantFinal = Number(autreMontant || montant);
+        const res = await donService.submitFinancier({
           montant: montantFinal,
           paiement,
+          anonyme,
           nom: form.nom,
           prenom: form.prenom,
           email: form.email,
           telephone: form.telephone,
-          anonyme,
         });
-        alert(
-          `Don de ${montantFinal} FCFA via ${paiement === "wave" ? "Wave" : "Orange Money"} soumis avec succès ! Merci pour votre générosité.`,
-        );
+        if (res.redirect_url) {
+          window.location.href = res.redirect_url;
+          return;
+        }
       } else {
         await donService.submitMateriel({
           items,
+          anonyme,
           nom: form.nom,
           prenom: form.prenom,
           email: form.email,
           telephone: form.telephone,
-          anonyme,
         });
-        alert("Don matériel soumis avec succès ! Merci pour votre générosité.");
+        alert("Don matériel confirmé ! Merci pour votre générosité.");
       }
+      setForm({ nom: "", prenom: "", email: "", telephone: "" });
+      setItems([{ materiel: "", quantite: "" }]);
+      setAutreMontant("");
     } catch (err) {
-      alert("Erreur lors de la soumission du don. Veuillez réessayer.");
+      setError(
+        err.response?.data?.message ||
+          "Impossible d'enregistrer le don. Réessayez.",
+      );
     } finally {
       setLoading(false);
     }
@@ -355,6 +364,12 @@ function DonatePage() {
             />
             <label htmlFor="anonyme">Faire un don anonyme</label>
           </div>
+
+          {error && (
+            <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+              {error}
+            </p>
+          )}
 
           {/* Bouton confirmer */}
           <button

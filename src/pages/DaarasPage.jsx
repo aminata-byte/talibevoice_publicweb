@@ -1,64 +1,69 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, MapPin, Users, Map, List } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import daaraService from "../services/daaraService";
+import DaarasMap from "../components/sections/DaarasMap";
 import "./DaarasPage.css";
 
-const regions = [
-  "Toutes les régions",
-  "Dakar",
-  "Thiès",
-  "Louga",
-  "Saint-Louis",
-];
-
 function DaarasPage() {
-  const [daaras, setDaaras] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [recherche, setRecherche] = useState("");
   const [region, setRegion] = useState("Toutes les régions");
   const [vue, setVue] = useState("liste");
   const [selectedDaara, setSelectedDaara] = useState(null);
-  const [besoins, setBesoins] = useState([]);
-  const [loadingBesoins, setLoadingBesoins] = useState(false);
-
-  useEffect(() => {
-    fetchDaaras();
-  }, []);
+  const [daarasData, setDaarasData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchDaaras = async () => {
     setLoading(true);
     setError(null);
     try {
       const data = await daaraService.getAll();
-      setDaaras(data);
+      setDaarasData(
+        data.map((d) => ({
+          id: d.id,
+          nom: d.nom,
+          localisation:
+            [d.commune, d.region].filter(Boolean).join(", ") || d.adresse,
+          talibés: d.talibes_count ?? d.nombre_talibes ?? 0,
+          besoins: (d.besoins || []).length,
+          region: d.region,
+          latitude: d.latitude ? Number(d.latitude) : null,
+          longitude: d.longitude ? Number(d.longitude) : null,
+          listeBesoins: (d.besoins || []).map((b) => ({
+            type: b.type,
+            description: b.description,
+            priorite: b.priorite,
+          })),
+        })),
+      );
     } catch (err) {
-      setError("Erreur lors du chargement des daaras.");
+      setError(
+        err.response?.data?.message || "Impossible de charger les daaras.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSelectDaara = async (daara) => {
-    setSelectedDaara(daara);
-    setLoadingBesoins(true);
-    try {
-      const data = await daaraService.getBesoins(daara.id);
-      setBesoins(data);
-    } catch (err) {
-      setBesoins([]);
-    } finally {
-      setLoadingBesoins(false);
-    }
-  };
+  useEffect(() => {
+    fetchDaaras();
+  }, []);
 
-  const daarasFiltres = daaras.filter((d) => {
+  const regions = useMemo(() => {
+    const uniques = daarasData
+      .map((d) => d.region)
+      .filter((r, i, arr) => r && arr.indexOf(r) === i);
+    return ["Toutes les régions", ...uniques];
+  }, [daarasData]);
+
+  const daarasFiltres = daarasData.filter((d) => {
     const matchRecherche = d.nom
       .toLowerCase()
       .includes(recherche.toLowerCase());
-    const matchRegion = region === "Toutes les régions" || d.region === region;
+    const matchRegion =
+      region === "Toutes les régions" || d.region === region;
     return matchRecherche && matchRegion;
   });
 
@@ -121,58 +126,57 @@ function DaarasPage() {
           </div>
 
           {error && (
-            <div
-              style={{
-                color: "var(--tertiary)",
-                textAlign: "center",
-                padding: "2rem",
-              }}
-            >
+            <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
               {error}
-            </div>
+            </p>
           )}
 
-          {loading ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "3rem",
-                color: "var(--text-secondary)",
-              }}
-            >
-              Chargement des daaras...
-            </div>
-          ) : (
-            <div className="daaras__list">
-              {daarasFiltres.map((daara) => (
-                <div
-                  key={daara.id}
-                  className="daara__card"
-                  onClick={() => handleSelectDaara(daara)}
-                >
-                  <div className="daara__card-image">
-                    <MapPin size={32} color="var(--primary)" />
-                  </div>
-                  <div className="daara__card-content">
-                    <div className="daara__card-header">
-                      <h3 className="daara__card-name">{daara.nom}</h3>
-                      {daara.besoins && daara.besoins.length > 0 && (
-                        <span className="daara__card-badge">
-                          {daara.besoins.length} Besoin
-                          {daara.besoins.length > 1 ? "s" : ""}
-                        </span>
-                      )}
+          {loading && <p>Chargement des daaras...</p>}
+
+          {!loading && !error && daarasFiltres.length === 0 && (
+            <p>Aucune daara ne correspond à votre recherche.</p>
+          )}
+
+          {!loading && !error && daarasFiltres.length > 0 && (
+            <>
+              {vue === "liste" ? (
+                <div className="daaras__list">
+                  {daarasFiltres.map((daara) => (
+                    <div
+                      key={daara.id}
+                      className="daara__card"
+                      onClick={() => setSelectedDaara(daara)}
+                    >
+                      <div className="daara__card-image">
+                        <MapPin size={32} color="var(--primary)" />
+                      </div>
+                      <div className="daara__card-content">
+                        <div className="daara__card-header">
+                          <h3 className="daara__card-name">{daara.nom}</h3>
+                          {daara.besoins > 0 && (
+                            <span className="daara__card-badge">
+                              {daara.besoins} Besoin
+                              {daara.besoins > 1 ? "s" : ""}
+                            </span>
+                          )}
+                        </div>
+                        <p className="daara__card-location">
+                          <MapPin size={13} /> {daara.localisation}
+                        </p>
+                        <p className="daara__card-talibés">
+                          <Users size={13} /> {daara.talibés} Talibés
+                        </p>
+                      </div>
                     </div>
-                    <p className="daara__card-location">
-                      <MapPin size={13} /> {daara.adresse}
-                    </p>
-                    <p className="daara__card-talibés">
-                      <Users size={13} /> {daara.nombre_talibes} Talibés
-                    </p>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              ) : (
+                <DaarasMap
+                  daaras={daarasFiltres}
+                  onSelect={setSelectedDaara}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
@@ -187,10 +191,10 @@ function DaarasPage() {
               <div>
                 <h2 className="daara__modal-title">{selectedDaara.nom}</h2>
                 <p className="daara__modal-location">
-                  <MapPin size={13} /> {selectedDaara.adresse}
+                  <MapPin size={13} /> {selectedDaara.localisation}
                 </p>
                 <p className="daara__modal-talibés">
-                  <Users size={13} /> {selectedDaara.nombre_talibes} Talibés
+                  <Users size={13} /> {selectedDaara.talibés} Talibés
                 </p>
               </div>
               <button
@@ -203,19 +207,15 @@ function DaarasPage() {
 
             <div className="daara__modal-body">
               <h3 className="daara__modal-subtitle">
-                Besoins actuels ({loadingBesoins ? "..." : besoins.length})
+                Besoins actuels ({selectedDaara.listeBesoins.length})
               </h3>
-              {loadingBesoins ? (
-                <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>
-                  Chargement...
-                </p>
-              ) : besoins.length === 0 ? (
+              {selectedDaara.listeBesoins.length === 0 ? (
                 <p className="daara__modal-empty">
                   Aucun besoin signalé pour ce daara.
                 </p>
               ) : (
                 <div className="daara__modal-besoins">
-                  {besoins.map((besoin, index) => (
+                  {selectedDaara.listeBesoins.map((besoin, index) => (
                     <div key={index} className="besoin__item">
                       <div className="besoin__item-header">
                         <span className="besoin__type">{besoin.type}</span>

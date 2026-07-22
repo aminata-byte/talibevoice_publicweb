@@ -1,58 +1,66 @@
-import { useNavigate, Link } from "react-router-dom";
-import {
-  Home,
-  Briefcase,
-  BarChart3,
-  User,
-  TrendingUp,
-  Users,
-  GraduationCap,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { TrendingUp, Users, GraduationCap } from "lucide-react";
+import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
+import PartnerSubNav from "../../components/layout/PartnerSubNav";
+import partnerService from "../../services/partnerService";
 import "./PartnerImpactPage.css";
 
+const STATUT_LABELS = {
+  en_attente: "En attente",
+  valide: "Validée",
+  actif: "Active",
+  inactif: "Inactive",
+};
+
 function PartnerImpactPage() {
-  const navigate = useNavigate();
+  const [impact, setImpact] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchImpact = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await partnerService.getImpact();
+      setImpact(data);
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Impossible de charger votre impact.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchImpact();
+  }, []);
 
   const stats = [
-    { icon: <Users size={24} />, number: "45", label: "Talibés inscrits" },
+    {
+      icon: <Users size={24} />,
+      number: loading ? "..." : (impact?.total_formes ?? 0),
+      label: "Talibés inscrits",
+    },
     {
       icon: <GraduationCap size={24} />,
-      number: "12",
+      number: loading ? "..." : (impact?.total_formations ?? 0),
       label: "Offres soumises",
     },
     {
       icon: <TrendingUp size={24} />,
-      number: "8",
+      number: loading ? "..." : (impact?.total_inseres ?? 0),
       label: "Insertions validées",
     },
   ];
 
-  const historique = [
-    { mois: "Janvier 2024", inscrits: 8, valides: 5 },
-    { mois: "Février 2024", inscrits: 12, valides: 9 },
-    { mois: "Mars 2024", inscrits: 10, valides: 7 },
-    { mois: "Avril 2024", inscrits: 15, valides: 11 },
-  ];
-
   return (
-    <div className="pimpact">
-      {/* Header */}
-      <div className="pimpact__header">
-        <div className="pimpact__header-left">
-          <img
-            src="/src/assets/logo.jpg"
-            alt="TalibeVoice"
-            className="pimpact__logo-img"
-          />
-        </div>
-        <button
-          className="pimpact__logout"
-          onClick={() => navigate("/partenaire/login")}
-        >
-          Impact
-        </button>
-      </div>
+    <div>
+      <Navbar />
+      <PartnerSubNav />
 
+      <div className="pimpact">
       <div className="pimpact__content">
         {/* Titre */}
         <div className="pimpact__hero">
@@ -61,6 +69,12 @@ function PartnerImpactPage() {
             Suivez l'évolution de votre contribution à l'insertion des talibés.
           </p>
         </div>
+
+        {error && (
+          <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+            {error}
+          </p>
+        )}
 
         {/* Stats */}
         <div className="pimpact__stats">
@@ -73,27 +87,33 @@ function PartnerImpactPage() {
           ))}
         </div>
 
-        {/* Historique */}
+        {/* Mes offres */}
         <div className="pimpact__historique">
-          <h2 className="pimpact__section-title">Historique mensuel</h2>
-          <table className="pimpact__table">
-            <thead>
-              <tr>
-                <th>Mois</th>
-                <th>Talibés inscrits</th>
-                <th>Insertions validées</th>
-              </tr>
-            </thead>
-            <tbody>
-              {historique.map((h, index) => (
-                <tr key={index}>
-                  <td>{h.mois}</td>
-                  <td>{h.inscrits}</td>
-                  <td>{h.valides}</td>
+          <h2 className="pimpact__section-title">Mes offres</h2>
+          {!loading && (impact?.formations?.length ?? 0) === 0 ? (
+            <p className="pimpact__subtitle">
+              Aucune offre soumise pour le moment.
+            </p>
+          ) : (
+            <table className="pimpact__table">
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Domaine</th>
+                  <th>Statut</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(impact?.formations ?? []).map((f) => (
+                  <tr key={f.id}>
+                    <td>{f.titre}</td>
+                    <td>{f.domaine}</td>
+                    <td>{STATUT_LABELS[f.statut] || f.statut}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         {/* Message */}
@@ -110,32 +130,9 @@ function PartnerImpactPage() {
           </div>
         </div>
       </div>
-
-      {/* Bottom nav */}
-      <div className="pimpact__bottom-nav">
-        <button
-          className="pimpact__nav-btn"
-          onClick={() => navigate("/partenaire/dashboard")}
-        >
-          <Home size={20} />
-          <span>Accueil</span>
-        </button>
-        <Link to="/partenaire/soumettre-offre" className="pimpact__nav-btn">
-          <Briefcase size={20} />
-          <span>Offres</span>
-        </Link>
-        <button className="pimpact__nav-btn active">
-          <BarChart3 size={20} />
-          <span>Impact</span>
-        </button>
-        <button
-          className="pimpact__nav-btn"
-          onClick={() => navigate("/partenaire/profil")}
-        >
-          <User size={20} />
-          <span>Profil</span>
-        </button>
       </div>
+
+      <Footer />
     </div>
   );
 }
