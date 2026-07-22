@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
+import PartnerSubNav from "../../components/layout/PartnerSubNav";
+import partnerService from "../../services/partnerService";
 import "./SubmitOfferPage.css";
 
 function SubmitOfferPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("formation");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [form, setForm] = useState({
     titre: "",
     domaine: "",
@@ -25,27 +31,70 @@ function SubmitOfferPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    alert(
-      "Offre soumise ! Elle sera validée par l'administrateur avant publication.",
-    );
-    navigate("/partenaire/dashboard");
+  const buildPayload = () => {
+    if (activeTab === "formation") {
+      return {
+        titre: form.titre,
+        domaine: form.domaine,
+        description: form.description,
+        date_debut: form.dateDebut,
+        date_fin: form.dateFin,
+        capacite: Number(form.places) || 1,
+        lieu: form.lieu,
+        prerequis: form.prerequis,
+      };
+    }
+    if (activeTab === "stage") {
+      return {
+        titre: form.poste,
+        domaine: "Stage",
+        description: form.description,
+        date_debut: form.dateDebut,
+        date_fin: form.dateFin,
+        capacite: Number(form.places) || 1,
+        lieu: form.lieu,
+        prerequis: form.profil,
+      };
+    }
+    return {
+      titre: form.poste,
+      domaine: form.typeContrat || "Emploi",
+      description: form.description,
+      date_debut: form.dateDebut,
+      date_fin: form.dateFin,
+      capacite: Number(form.places) || 1,
+      lieu: form.lieu,
+      prerequis: form.profil,
+    };
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await partnerService.submitOffre(buildPayload());
+      alert(
+        "Offre soumise ! Elle sera validée par l'administrateur avant publication.",
+      );
+      navigate("/partenaire/dashboard");
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Impossible de soumettre l'offre. Vérifiez les champs obligatoires.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="soffer">
-      {/* Header */}
-      <div className="soffer__header">
-        <button
-          className="soffer__back"
-          onClick={() => navigate("/partenaire/dashboard")}
-        >
-          <ArrowLeft size={18} />
-          Soumettre une offre
-        </button>
-      </div>
+    <div>
+      <Navbar />
+      <PartnerSubNav />
 
+      <div className="soffer">
       <div className="soffer__container">
+        <h1 className="soffer__title">Soumettre une offre</h1>
         {/* Tabs */}
         <div className="soffer__tabs">
           <button
@@ -204,12 +253,35 @@ function SubmitOfferPage() {
                 />
               </div>
               <div className="soffer__form-group">
+                <label className="soffer__label">Date de fin</label>
+                <input
+                  type="date"
+                  name="dateFin"
+                  value={form.dateFin}
+                  onChange={handleForm}
+                  className="soffer__input"
+                />
+              </div>
+            </div>
+            <div className="soffer__row">
+              <div className="soffer__form-group">
                 <label className="soffer__label">Durée</label>
                 <input
                   type="text"
                   name="duree"
                   placeholder="ex: 3 mois"
                   value={form.duree}
+                  onChange={handleForm}
+                  className="soffer__input"
+                />
+              </div>
+              <div className="soffer__form-group">
+                <label className="soffer__label">Nombre de places</label>
+                <input
+                  type="number"
+                  name="places"
+                  placeholder="ex: 2"
+                  value={form.places}
                   onChange={handleForm}
                   className="soffer__input"
                 />
@@ -279,6 +351,39 @@ function SubmitOfferPage() {
                 <option>Freelance</option>
               </select>
             </div>
+            <div className="soffer__row">
+              <div className="soffer__form-group">
+                <label className="soffer__label">Date de début</label>
+                <input
+                  type="date"
+                  name="dateDebut"
+                  value={form.dateDebut}
+                  onChange={handleForm}
+                  className="soffer__input"
+                />
+              </div>
+              <div className="soffer__form-group">
+                <label className="soffer__label">Date de fin</label>
+                <input
+                  type="date"
+                  name="dateFin"
+                  value={form.dateFin}
+                  onChange={handleForm}
+                  className="soffer__input"
+                />
+              </div>
+            </div>
+            <div className="soffer__form-group">
+              <label className="soffer__label">Nombre de postes</label>
+              <input
+                type="number"
+                name="places"
+                placeholder="ex: 1"
+                value={form.places}
+                onChange={handleForm}
+                className="soffer__input"
+              />
+            </div>
             <div className="soffer__form-group">
               <label className="soffer__label">Lieu</label>
               <input
@@ -304,10 +409,20 @@ function SubmitOfferPage() {
           </div>
         )}
 
+        {error && (
+          <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+            {error}
+          </p>
+        )}
+
         {/* Bouton + Note */}
-        <button className="soffer__submit" onClick={handleSubmit}>
+        <button
+          className="soffer__submit"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
           <Send size={18} />
-          Soumettre l'offre
+          {loading ? "Envoi..." : "Soumettre l'offre"}
         </button>
 
         <div className="soffer__note">
@@ -318,6 +433,9 @@ function SubmitOfferPage() {
           </p>
         </div>
       </div>
+      </div>
+
+      <Footer />
     </div>
   );
 }

@@ -17,16 +17,16 @@ function Navbar() {
         {/* Liens de navigation */}
         <ul className="navbar__links">
           <li>
-            <a href="#impact">Impact</a>
+            <a href="/#impact">Impact</a>
           </li>
           <li>
-            <a href="#processus">Processus</a>
+            <a href="/#processus">Processus</a>
           </li>
           <li>
-            <a href="#partenaires">Partenaires</a>
+            <a href="/#partenaires">Partenaires</a>
           </li>
           <li>
-            <a href="#temoignages">Témoignages</a>
+            <a href="/#temoignages">Témoignages</a>
           </li>
         </ul>
 

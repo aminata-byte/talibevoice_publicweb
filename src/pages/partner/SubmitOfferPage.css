@@ -1,27 +1,19 @@
 .soffer {
-  min-height: 100vh;
+  min-height: 60vh;
   background-color: var(--background);
 }
 
-/* Header */
-.soffer__header {
-  background-color: var(--primary-dark);
-  padding: 1rem 2rem;
-}
-
-.soffer__back {
-  background: transparent;
-  color: var(--white);
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
+.soffer__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 /* Container */
 .soffer__container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

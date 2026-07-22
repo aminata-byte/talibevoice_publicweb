@@ -1,22 +1,45 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { KeyRound } from "lucide-react";
+import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
+import api from "../../services/api";
 import "./PartnerLoginPage.css";
 
 function PartnerLoginPage() {
   const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleAcceder = () => {
+  const handleAcceder = async () => {
     if (code.trim() === "") {
-      alert("Veuillez entrer votre code partenaire.");
+      setError("Veuillez entrer votre code partenaire.");
       return;
     }
-    navigate("/partenaire/dashboard");
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await api.post("/partenaires/login", {
+        code_partenaire: code,
+      });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("partenaire", JSON.stringify(res.data.partenaire));
+      navigate("/partenaire/dashboard");
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Code partenaire invalide ou compte non validé.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="plogin">
+    <div>
+      <Navbar />
+      <div className="plogin">
       <div className="plogin__card">
         {/* Logo */}
         <div className="plogin__logo">
@@ -43,15 +66,31 @@ function PartnerLoginPage() {
               placeholder="Entrez votre code"
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAcceder()}
               className="plogin__input"
             />
           </div>
         </div>
 
+        {error && (
+          <p className="plogin__link" style={{ color: "var(--tertiary)" }}>
+            {error}
+          </p>
+        )}
+
         {/* Bouton */}
-        <button className="plogin__btn" onClick={handleAcceder}>
-          Accéder
+        <button
+          className="plogin__btn"
+          onClick={handleAcceder}
+          disabled={loading}
+        >
+          {loading ? "Connexion..." : "Accéder"}
         </button>
+
+        {/* Lien code oublié */}
+        <p className="plogin__link">
+          <Link to="/partenaire/recuperer-code">Récupérer mon code</Link>
+        </p>
 
         {/* Lien */}
         <p className="plogin__link">
@@ -59,6 +98,8 @@ function PartnerLoginPage() {
           <Link to="/devenir-partenaire">Candidater ici</Link>
         </p>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

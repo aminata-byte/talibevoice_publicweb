@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import partnerService from "../services/partnerService";
 import "./BecomePartnerPage.css";
 
 function BecomePartnerPage() {
@@ -14,16 +15,34 @@ function BecomePartnerPage() {
     telephone: "",
     motivation: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleForm = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    alert(
-      "Candidature soumise ! Vous recevrez votre code partenaire sous 48h.",
-    );
-    navigate("/");
+  const handleSubmit = async () => {
+    if (!form.organisation || !form.domaine || !form.contact || !form.email) {
+      setError("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      await partnerService.register(form);
+      alert(
+        "Candidature soumise ! Vous recevrez votre code partenaire sous 48h.",
+      );
+      navigate("/");
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Impossible de soumettre la candidature. Vérifiez les champs.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -119,8 +138,18 @@ function BecomePartnerPage() {
               />
             </div>
 
-            <button className="partner__submit" onClick={handleSubmit}>
-              Soumettre ma candidature →
+            {error && (
+              <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+                {error}
+              </p>
+            )}
+
+            <button
+              className="partner__submit"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "Envoi..." : "Soumettre ma candidature →"}
             </button>
 
             <p className="partner__note">

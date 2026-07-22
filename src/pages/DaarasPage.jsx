@@ -1,159 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, MapPin, Users, Map, List } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import daaraService from "../services/daaraService";
+import DaarasMap from "../components/sections/DaarasMap";
 import "./DaarasPage.css";
-
-const daarasData = [
-  {
-    id: 1,
-    nom: "Daara Al Nour",
-    localisation: "Dakar Plateau, Dakar",
-    talibés: 74,
-    besoins: 3,
-    region: "Dakar",
-    listeBesoins: [
-      {
-        type: "Alimentaire",
-        description: "50 sacs de riz",
-        priorite: "urgent",
-      },
-      {
-        type: "Médical",
-        description: "Médicaments contre le paludisme",
-        priorite: "urgent",
-      },
-      {
-        type: "Éducatif",
-        description: "30 kits scolaires",
-        priorite: "normal",
-      },
-    ],
-  },
-  {
-    id: 2,
-    nom: "Darou Salam",
-    localisation: "Mbour, Thiès",
-    talibés: 112,
-    besoins: 1,
-    region: "Thiès",
-    listeBesoins: [
-      {
-        type: "Alimentaire",
-        description: "Huile et sucre pour 1 mois",
-        priorite: "normal",
-      },
-    ],
-  },
-  {
-    id: 3,
-    nom: "Complex Touba",
-    localisation: "Darou Mousty, Louga",
-    talibés: 245,
-    besoins: 5,
-    region: "Louga",
-    listeBesoins: [
-      {
-        type: "Alimentaire",
-        description: "100 sacs de riz",
-        priorite: "urgent",
-      },
-      {
-        type: "Médical",
-        description: "Vaccins et soins de base",
-        priorite: "urgent",
-      },
-      {
-        type: "Éducatif",
-        description: "Tableaux et craies",
-        priorite: "normal",
-      },
-      {
-        type: "Infrastructure",
-        description: "Réparation du toit",
-        priorite: "urgent",
-      },
-      {
-        type: "Vêtements",
-        description: "Tenues pour 80 talibés",
-        priorite: "faible",
-      },
-    ],
-  },
-  {
-    id: 4,
-    nom: "Daara Malika",
-    localisation: "Malika, Dakar",
-    talibés: 89,
-    besoins: 2,
-    region: "Dakar",
-    listeBesoins: [
-      {
-        type: "Éducatif",
-        description: "50 livres de coran",
-        priorite: "normal",
-      },
-      {
-        type: "Alimentaire",
-        description: "Farine et lait",
-        priorite: "faible",
-      },
-    ],
-  },
-  {
-    id: 5,
-    nom: "Daara Tivaouane",
-    localisation: "Tivaouane, Thiès",
-    talibés: 134,
-    besoins: 0,
-    region: "Thiès",
-    listeBesoins: [],
-  },
-  {
-    id: 6,
-    nom: "Daara Saint-Louis",
-    localisation: "Saint-Louis",
-    talibés: 67,
-    besoins: 4,
-    region: "Saint-Louis",
-    listeBesoins: [
-      {
-        type: "Alimentaire",
-        description: "Riz et huile pour 2 mois",
-        priorite: "urgent",
-      },
-      {
-        type: "Médical",
-        description: "Trousse de premiers secours",
-        priorite: "normal",
-      },
-      {
-        type: "Infrastructure",
-        description: "Rénovation des dortoirs",
-        priorite: "normal",
-      },
-      {
-        type: "Éducatif",
-        description: "Matériel pédagogique",
-        priorite: "faible",
-      },
-    ],
-  },
-];
-
-const regions = [
-  "Toutes les régions",
-  "Dakar",
-  "Thiès",
-  "Louga",
-  "Saint-Louis",
-];
 
 function DaarasPage() {
   const [recherche, setRecherche] = useState("");
   const [region, setRegion] = useState("Toutes les régions");
   const [vue, setVue] = useState("liste");
   const [selectedDaara, setSelectedDaara] = useState(null);
+  const [daarasData, setDaarasData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchDaaras = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await daaraService.getAll();
+      setDaarasData(
+        data.map((d) => ({
+          id: d.id,
+          nom: d.nom,
+          localisation: [d.commune, d.region].filter(Boolean).join(", ") || d.adresse,
+          talibés: d.talibes_count ?? d.nombre_talibes ?? 0,
+          besoins: (d.besoins || []).length,
+          region: d.region,
+          latitude: d.latitude ? Number(d.latitude) : null,
+          longitude: d.longitude ? Number(d.longitude) : null,
+          listeBesoins: (d.besoins || []).map((b) => ({
+            type: b.type,
+            description: b.description,
+            priorite: b.priorite,
+          })),
+        })),
+      );
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Impossible de charger les daaras.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDaaras();
+  }, []);
+
+  const regions = useMemo(() => {
+    const uniques = daarasData
+      .map((d) => d.region)
+      .filter((r, i, arr) => r && arr.indexOf(r) === i);
+    return ["Toutes les régions", ...uniques];
+  }, [daarasData]);
 
   const daarasFiltres = daarasData.filter((d) => {
     const matchRecherche = d.nom
@@ -223,36 +125,57 @@ function DaarasPage() {
             </div>
           </div>
 
-          {/* Liste */}
-          <div className="daaras__list">
-            {daarasFiltres.map((daara) => (
-              <div
-                key={daara.id}
-                className="daara__card"
-                onClick={() => setSelectedDaara(daara)}
-              >
-                <div className="daara__card-image">
-                  <MapPin size={32} color="var(--primary)" />
+          {error && (
+            <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+              {error}
+            </p>
+          )}
+
+          {loading && <p>Chargement des daaras...</p>}
+
+          {!loading && !error && daarasFiltres.length === 0 && (
+            <p>Aucune daara ne correspond à votre recherche.</p>
+          )}
+
+          {/* Liste ou Carte */}
+          {!loading && !error && daarasFiltres.length > 0 && (
+            <>
+              {vue === "liste" ? (
+                <div className="daaras__list">
+                  {daarasFiltres.map((daara) => (
+                    <div
+                      key={daara.id}
+                      className="daara__card"
+                      onClick={() => setSelectedDaara(daara)}
+                    >
+                      <div className="daara__card-image">
+                        <MapPin size={32} color="var(--primary)" />
+                      </div>
+                      <div className="daara__card-content">
+                        <div className="daara__card-header">
+                          <h3 className="daara__card-name">{daara.nom}</h3>
+                          {daara.besoins > 0 && (
+                            <span className="daara__card-badge">
+                              {daara.besoins} Besoin
+                              {daara.besoins > 1 ? "s" : ""}
+                            </span>
+                          )}
+                        </div>
+                        <p className="daara__card-location">
+                          <MapPin size={13} /> {daara.localisation}
+                        </p>
+                        <p className="daara__card-talibés">
+                          <Users size={13} /> {daara.talibés} Talibés
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="daara__card-content">
-                  <div className="daara__card-header">
-                    <h3 className="daara__card-name">{daara.nom}</h3>
-                    {daara.besoins > 0 && (
-                      <span className="daara__card-badge">
-                        {daara.besoins} Besoin{daara.besoins > 1 ? "s" : ""}
-                      </span>
-                    )}
-                  </div>
-                  <p className="daara__card-location">
-                    <MapPin size={13} /> {daara.localisation}
-                  </p>
-                  <p className="daara__card-talibés">
-                    <Users size={13} /> {daara.talibés} Talibés
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ) : (
+                <DaarasMap daaras={daarasFiltres} onSelect={setSelectedDaara} />
+              )}
+            </>
+          )}
         </div>
       </div>
 

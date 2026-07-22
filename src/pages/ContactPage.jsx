@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import contactService from "../services/contactService";
 import "./ContactPage.css";
 
 function ContactPage() {
@@ -11,14 +12,30 @@ function ContactPage() {
     sujet: "Donation",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleForm = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    alert("Message envoyé ! Nous vous répondrons dans les plus brefs délais.");
-    setForm({ nom: "", email: "", sujet: "Donation", message: "" });
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await contactService.send(form);
+      alert(
+        "Message envoyé ! Nous vous répondrons dans les plus brefs délais.",
+      );
+      setForm({ nom: "", email: "", sujet: "Donation", message: "" });
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Impossible d'envoyer le message. Réessayez.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const infos = [
@@ -108,8 +125,18 @@ function ContactPage() {
                   />
                 </div>
 
-                <button className="contact__submit" onClick={handleSubmit}>
-                  Envoyer le message
+                {error && (
+                  <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+                    {error}
+                  </p>
+                )}
+
+                <button
+                  className="contact__submit"
+                  onClick={handleSubmit}
+                  disabled={loading}
+                >
+                  {loading ? "Envoi..." : "Envoyer le message"}
                 </button>
               </div>
             </div>

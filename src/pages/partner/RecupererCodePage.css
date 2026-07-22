@@ -1,0 +1,164 @@
+.recuperer-page {
+  min-height: 65vh;
+  background: var(--background, #f5f7fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.recuperer-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recuperer-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.recuperer-back:hover {
+  color: var(--primary);
+}
+
+.recuperer-icon {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 0;
+}
+
+.recuperer-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+}
+
+.recuperer-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0;
+}
+
+.recuperer-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recuperer-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.recuperer-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: white;
+  color: var(--text-secondary);
+}
+
+.recuperer-input-wrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.recuperer-error {
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 0;
+}
+
+.recuperer-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+}
+
+.recuperer-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.recuperer-result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recuperer-result-nom {
+  text-align: center;
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.recuperer-code-box {
+  background: rgba(27, 125, 75, 0.08);
+  border: 2px dashed var(--primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.recuperer-code-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px;
+}
+
+.recuperer-code {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 6px;
+  font-family: monospace;
+  margin: 0;
+}
+
+.recuperer-copy-btn {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+}

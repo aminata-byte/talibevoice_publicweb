@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Lock, Plus, X } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import donService from "../services/donService";
 import "./DonatePage.css";
 
 const materiels = [
@@ -30,6 +31,8 @@ function DonatePage() {
     telephone: "",
   });
   const [items, setItems] = useState([{ materiel: "", quantite: "" }]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const montants = [1000, 5000, 10000, 25000];
 
@@ -51,14 +54,46 @@ function DonatePage() {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
-    if (typeDon === "financier") {
-      const montantFinal = autreMontant || montant;
-      alert(
-        `Don financier de ${montantFinal} FCFA via ${paiement === "wave" ? "Wave" : "Orange Money"} confirmé !`,
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (typeDon === "financier") {
+        const montantFinal = Number(autreMontant || montant);
+        const res = await donService.submitFinancier({
+          montant: montantFinal,
+          paiement,
+          anonyme,
+          nom: form.nom,
+          prenom: form.prenom,
+          email: form.email,
+          telephone: form.telephone,
+        });
+        if (res.redirect_url) {
+          window.location.href = res.redirect_url;
+          return;
+        }
+      } else {
+        await donService.submitMateriel({
+          items,
+          anonyme,
+          nom: form.nom,
+          prenom: form.prenom,
+          email: form.email,
+          telephone: form.telephone,
+        });
+        alert("Don matériel confirmé ! Merci pour votre générosité.");
+      }
+      setForm({ nom: "", prenom: "", email: "", telephone: "" });
+      setItems([{ materiel: "", quantite: "" }]);
+      setAutreMontant("");
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Impossible d'enregistrer le don. Réessayez.",
       );
-    } else {
-      alert("Don matériel confirmé ! Merci pour votre générosité.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -335,10 +370,20 @@ function DonatePage() {
             <label htmlFor="anonyme">Faire un don anonyme</label>
           </div>
 
+          {error && (
+            <p style={{ color: "var(--tertiary)", fontSize: "14px" }}>
+              {error}
+            </p>
+          )}
+
           {/* Bouton confirmer */}
-          <button className="donate__submit" onClick={handleSubmit}>
+          <button
+            className="donate__submit"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             <Lock size={18} />
-            Confirmer le don
+            {loading ? "Envoi..." : "Confirmer le don"}
           </button>
         </div>
       </div>

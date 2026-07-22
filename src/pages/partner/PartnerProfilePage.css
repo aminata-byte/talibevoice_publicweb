@@ -1,5 +1,5 @@
 .pprofile {
-  min-height: 100vh;
+  min-height: 60vh;
   background-color: var(--background);
   display: flex;
   flex-direction: column;
@@ -36,7 +36,6 @@
 
 /* Content */
 .pprofile__content {
-  padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -44,7 +43,7 @@
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
-  padding-bottom: 5rem;
+  padding: 2.5rem 2rem;
 }
 
 /* Hero */
